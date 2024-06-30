@@ -1,14 +1,15 @@
 import React from 'react';
-import '../styles/Footer.css';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
 
-const Footer = () => {
+function Footer() {
   return (
-    <footer className="footer">
-      <div className="container">
-        <p>&copy; 2024 E-Commerce. All rights reserved.</p>
-      </div>
-    </footer>
+    <Container component="footer" style={{ padding: '1rem 0', backgroundColor: '#333', color: '#fff', textAlign: 'center' }}>
+      <Typography variant="body2">
+        &copy; 2024 E-Commerce. All rights reserved.
+      </Typography>
+    </Container>
   );
-};
+}
 
 export default Footer;

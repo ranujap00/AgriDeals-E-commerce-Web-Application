@@ -1,16 +1,33 @@
 import React from 'react';
-import '../styles/ProductCard.css';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import CardActions from '@mui/material/CardActions';
+import Button from '@mui/material/Button';
 
-const ProductCard = ({ product }) => {
+function ProductCard({ product }) {
   return (
-    <div className="product-card">
-      <img src={product.image} alt={product.name} />
-      <div className="product-info">
-        <h2>{product.name}</h2>
-        <p>${product.price.toFixed(2)}</p>
-      </div>
-    </div>
+    <Card>
+      <CardMedia
+        component="img"
+        height="140"
+        image={product.image}
+        alt={product.name}
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          {product.name}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          ${product.price}
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Button size="small">Add to Cart</Button>
+      </CardActions>
+    </Card>
   );
-};
+}
 
 export default ProductCard;

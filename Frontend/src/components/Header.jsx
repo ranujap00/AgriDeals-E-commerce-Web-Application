@@ -1,22 +1,25 @@
 import React from 'react';
-import '../styles/Header.css';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
-const Header = () => {
+function Header() {
   return (
-    <header className="header">
-      <div className="container">
-        <h1 className="logo">E-Commerce</h1>
-        <nav>
-          <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/products">Products</a></li>
-            <li><a href="/about">About</a></li>
-            <li><a href="/contact">Contact</a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
+    <AppBar position="static">
+      <Toolbar>
+        <Typography variant="h6" style={{ flexGrow: 1 }}>
+          E-Commerce
+        </Typography>
+        <Button color="inherit">Login</Button>
+        <IconButton color="inherit">
+          <ShoppingCartIcon />
+        </IconButton>
+      </Toolbar>
+    </AppBar>
   );
-};
+}
 
 export default Header;
