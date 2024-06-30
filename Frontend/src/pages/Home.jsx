@@ -15,7 +15,7 @@ function Home() {
   return (
     <>
       <Header />
-      <Container style={{ padding: '2rem 0' }}>
+      <Container style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '2rem 0' }}>
         <Grid container spacing={4}>
           {products.map((product) => (
             <Grid item key={product.id} xs={12} sm={6} md={4}>
