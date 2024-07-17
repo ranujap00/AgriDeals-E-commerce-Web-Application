@@ -1,3 +1,4 @@
+// ProductCard.jsx
 import React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -6,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
 
-function ProductCard({ product }) {
+function ProductCard({ product, addToCart }) {
   return (
     <Card>
       <CardMedia
@@ -24,7 +25,7 @@ function ProductCard({ product }) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Add to Cart</Button>
+        <Button size="small" onClick={() => addToCart(product)}>Add to Cart</Button>
       </CardActions>
     </Card>
   );
