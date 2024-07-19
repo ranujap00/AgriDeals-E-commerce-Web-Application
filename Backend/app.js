@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 // const productRoutes = require('./routes/productRoutes');
 // const userRoutes = require('./routes/userRoutes');
-const advertisementRoutes = require('./routes/advertisementRoutes');
+const itemRoutes = require('./routes/itemRoutes');
 const { mongoURI } = require('./config/database');
 
 const app = express();
@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 // Routes
 // app.use('/api/products', productRoutes);
 // app.use('/api/users', userRoutes);
-app.use('/api/advertisements', advertisementRoutes); // Advertisement routes
+app.use('/api/items', itemRoutes); // Advertisement routes
 
 // Connect to MongoDB
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
