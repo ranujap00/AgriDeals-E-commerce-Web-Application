@@ -1,15 +1,19 @@
-// Header.jsx
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import { InputAdornment, TextField, Badge, Menu, MenuItem, Box, Paper } from '@mui/material';
+import { InputAdornment, TextField, Badge, Menu, MenuItem, Box, Paper, Divider } from '@mui/material';
 import { Favorite, Search, ShoppingCart, Remove } from '@mui/icons-material';
+import { useDispatch } from 'react-redux';
+import { addItem } from '../store/cartSlice';
 
 function Header({ cartItems, removeFromCart }) {
   const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -17,6 +21,12 @@ function Header({ cartItems, removeFromCart }) {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleCheckout = () => {
+    handleClose();
+    // cartItems.forEach(item => dispatch(addItem(item)));
+    navigate('/checkout');
   };
 
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -80,7 +90,14 @@ function Header({ cartItems, removeFromCart }) {
                   </Box>
                 </Paper>
               </MenuItem>
-            ))
+            )).concat(
+              <Divider key="divider" />,
+              <MenuItem key="checkout">
+                <Button variant="contained" color="primary" fullWidth onClick={handleCheckout}>
+                  Checkout
+                </Button>
+              </MenuItem>
+            )
           )}
         </Menu>
         <IconButton color="inherit">
