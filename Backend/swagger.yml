@@ -1,0 +1,181 @@
+openapi: 3.0.0
+info:
+  title: AgriDeals
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000
+tags:
+  - name: Item
+  - name: User
+  - name: Order
+  - name: admin
+paths:
+  /api/items:
+    post:
+      tags:
+        - Item
+      summary: add item
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                category: agriculture
+                name: ABC Pesticide
+                description: This is a pesticide developed by ABC company for tea plants
+                price: 6000
+                expiry_period: 20
+                available_count: 100
+                images:
+                  - img1
+                  - img2
+                  - img3
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/advertisements:
+    get:
+      tags:
+        - Item
+      summary: get all items
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/items/itm-92f4abba:
+    get:
+      tags:
+        - Item
+      summary: get-item-by-id
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/users/signup:
+    post:
+      tags:
+        - User
+      summary: sign-up
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Ruwanda Himara
+                email: ruwandahimara@gmail.com
+                password: ruwanda@1234
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/users/login:
+    post:
+      tags:
+        - User
+      summary: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: ruwandahimara@gmail.com
+                password: ruwanda@1234
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/users/email/ruwandahimara@gmail.com:
+    get:
+      tags:
+        - User
+      summary: get-user-by-email
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/orders:
+    post:
+      tags:
+        - Order
+      summary: create-order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                user_details:
+                  user_id: usr-d6cef32e
+                  name: Ruwanda
+                  email: ruwandahimara@gmail.com
+                  contact_number: +94 72 234 4432
+                items:
+                  - item_id: itm-92f4abba
+                    name: ABC Pesticide
+                    quantity: 3
+                    price: 6000
+                shipping_address: 46, Gangodawila, Nugegoda
+                total_price: 18000
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Order
+      summary: get-all-orders
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/orders/status/pending:
+    get:
+      tags:
+        - Order
+      summary: get-order-by-status
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/orders/user/usr-d6cef32e:
+    get:
+      tags:
+        - Order
+      summary: get-orders-by-user-id
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/admin/signup:
+    post:
+      tags:
+        - admin
+      summary: create-admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: ranuja
+                email: ranujap00@gmail.com
+                password: r123
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
