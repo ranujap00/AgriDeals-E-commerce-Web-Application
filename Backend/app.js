@@ -3,7 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 // const productRoutes = require('./routes/productRoutes');
-// const userRoutes = require('./routes/userRoutes');
+const userRoutes = require('./routes/userRoutes');
 const itemRoutes = require('./routes/itemRoutes');
 const { mongoURI } = require('./config/database');
 
@@ -14,8 +14,8 @@ app.use(bodyParser.json());
 
 // Routes
 // app.use('/api/products', productRoutes);
-// app.use('/api/users', userRoutes);
-app.use('/api/items', itemRoutes); // Advertisement routes
+app.use('/api/users', userRoutes);
+app.use('/api/items', itemRoutes);
 
 // Connect to MongoDB
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
