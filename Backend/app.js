@@ -2,7 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-// const productRoutes = require('./routes/productRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 const userRoutes = require('./routes/userRoutes');
 const itemRoutes = require('./routes/itemRoutes');
 const { mongoURI } = require('./config/database');
@@ -13,7 +13,7 @@ const app = express();
 app.use(bodyParser.json());
 
 // Routes
-// app.use('/api/products', productRoutes);
+app.use('/api/orders', orderRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/items', itemRoutes);
 
