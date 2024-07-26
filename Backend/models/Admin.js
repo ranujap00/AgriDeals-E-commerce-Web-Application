@@ -1,8 +1,8 @@
-// models/Advertisement.js
+// models/Admin.js
 const mongoose = require('mongoose');
 
-const UserSchema = new mongoose.Schema({
-  user_id: {
+const AdminSchema = new mongoose.Schema({
+  admin_id: {
     type: String,
     required: true
   },
@@ -28,4 +28,4 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('Admin', AdminSchema);
