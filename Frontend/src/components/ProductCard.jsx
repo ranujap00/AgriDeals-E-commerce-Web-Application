@@ -1,13 +1,14 @@
-// ProductCard.jsx
 import React from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import CardActions from '@mui/material/CardActions';
-import Button from '@mui/material/Button';
+import { Card, CardContent, CardMedia, Typography, Button, Box } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
-function ProductCard({ product, addToCart }) {
+const ProductCard = ({ product, addToCart }) => {
+  const navigate = useNavigate();
+
+  const handleViewProduct = () => {
+    navigate(`/product/${product.id}`);
+  };
+
   return (
     <Card>
       <CardMedia
@@ -17,18 +18,23 @@ function ProductCard({ product, addToCart }) {
         alt={product.name}
       />
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography gutterBottom variant="h6" component="div">
           {product.name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          ${product.price}
+          ${product.price.toFixed(2)}
         </Typography>
+        <Box mt={2} display="flex" justifyContent="space-between">
+          <Button size="small" variant="contained" onClick={() => addToCart(product)}>
+            Add to Cart
+          </Button>
+          <Button size="small" variant="outlined" onClick={handleViewProduct}>
+            View
+          </Button>
+        </Box>
       </CardContent>
-      <CardActions>
-        <Button size="small" onClick={() => addToCart(product)}>Add to Cart</Button>
-      </CardActions>
     </Card>
   );
-}
+};
 
 export default ProductCard;

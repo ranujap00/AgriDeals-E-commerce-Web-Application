@@ -1,10 +1,12 @@
-// Home.jsx
+// HomePage.jsx
 import React, { useState } from "react";
 import { Typography, Button, Container, Grid } from "@mui/material";
 import Header from "../components/Header";
 import ProductCard from "../components/ProductCard";
 import Footer from "../components/Footer";
 import "../styles/HomePage.css"; 
+import { useDispatch, useSelector } from "react-redux";
+import { addItem, removeItem } from '../store/cartSlice';
 
 const categories = [
   "Electronics",
@@ -34,32 +36,16 @@ const products = [
 ];
 
 const HomePage = () => {
-  const [cartItems, setCartItems] = useState([]);
+
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
 
   const addToCart = (product) => {
-    setCartItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.id === product.id);
-      if (existingItem) {
-        return prevItems.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-      return [...prevItems, { ...product, quantity: 1 }];
-    });
+    dispatch(addItem(product));
   };
 
   const removeFromCart = (productId) => {
-    setCartItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.id === productId);
-      if (existingItem.quantity === 1) {
-        return prevItems.filter((item) => item.id !== productId);
-      }
-      return prevItems.map((item) =>
-        item.id === productId ? { ...item, quantity: item.quantity - 1 } : item
-      );
-    });
+    dispatch(removeItem(productId));
   };
 
   return (
