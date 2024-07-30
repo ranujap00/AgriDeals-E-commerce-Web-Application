@@ -1,4 +1,3 @@
-// HomePage.jsx
 import React, { useEffect, useState } from "react";
 import { Typography, Button, Container, Grid } from "@mui/material";
 import Header from "../components/Header";
@@ -76,7 +75,7 @@ const HomePage = () => {
           >
             <Grid container spacing={4}>
               {products.map((product) => (
-                <Grid item xs={12} sm={6} md={3} key={`grid-${product.id}`}>
+                <Grid item xs={12} sm={6} md={3} key={`grid-${product.item_id}`}>
                   <ProductCard product={product} addToCart={addToCart} />
                 </Grid>
               ))}
