@@ -40,7 +40,7 @@ const AddProductPage = () => {
     description: "",
     price: "",
     post_date: "",
-    expiry_date: "",
+    expiry_period: "",
     available_count: "",
     status: "active",
   });
@@ -91,7 +91,7 @@ const AddProductPage = () => {
       description: formData.description,
       price: parseFloat(formData.price), 
       post_date: new Date(formData.post_date).toISOString(),
-      expiry_date: new Date(formData.expiry_date).toISOString(), 
+      expiry_period: formData.expiry_period, 
       available_count: parseInt(formData.available_count),
       status: formData.status,
       images: [], 
@@ -119,6 +119,8 @@ const AddProductPage = () => {
           headers: {
             "Content-Type": "application/json",
           },
+          maxContentLength: 50 * 1024 * 1024, // 50 MB
+          maxBodyLength: 50 * 1024 * 1024, // 50 MB
         }
       );
 
@@ -257,12 +259,11 @@ const AddProductPage = () => {
                 <TextField
                   fullWidth
                   label="Expiry Date"
-                  name="expiry_date"
-                  type="date"
-                  value={formData.expiry_date}
+                  name="expiry_period"
+                  type="number"
+                  value={formData.expiry_period}
                   onChange={handleInputChange}
                   margin="normal"
-                  InputLabelProps={{ shrink: true }}
                   required
                 />
                 <TextField

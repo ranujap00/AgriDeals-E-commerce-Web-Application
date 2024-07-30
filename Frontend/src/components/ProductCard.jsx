@@ -11,12 +11,14 @@ const ProductCard = ({ product, addToCart }) => {
 
   return (
     <Card>
-      <CardMedia
-        component="img"
-        height="140"
-        image={product.image}
-        alt={product.name}
-      />
+      {product.images && product.images.length > 0 && (
+        <CardMedia
+          component="img"
+          height="140"
+          image={product.images[0]}
+          alt={product.name}
+        />
+      )}
       <CardContent>
         <Typography gutterBottom variant="h6" component="div">
           {product.name}
