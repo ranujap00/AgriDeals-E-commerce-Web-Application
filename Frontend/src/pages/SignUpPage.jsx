@@ -10,16 +10,31 @@ import {
   Paper,
 } from '@mui/material';
 import { PersonAddOutlined } from '@mui/icons-material';
+import axios from 'axios';
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
 
 const SignUpPage = () => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      // const { token } = response.data;
+      // localStorage.setItem('token', token);
+      window.location.href = '/login'; // Redirect to a different page after successful signup
+    } catch (error) {
+      setError('Error signing up');
+    }
   };
 
   return (
@@ -31,29 +46,17 @@ const SignUpPage = () => {
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
-                autoComplete="given-name"
-                name="firstName"
+                autoComplete="name"
+                name="name"
                 required
                 fullWidth
-                id="firstName"
-                label="First Name"
+                id="name"
+                label="Name"
                 autoFocus
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="family-name"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -94,6 +97,7 @@ const SignUpPage = () => {
               />
             </Grid>
           </Grid>
+          {error && <Typography color="error">{error}</Typography>}
           <Button
             type="submit"
             fullWidth

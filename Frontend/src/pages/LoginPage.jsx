@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -12,13 +12,26 @@ import {
   Paper,
 } from '@mui/material';
 import { LockOutlined } from '@mui/icons-material';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../store/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { token, error, status } = useSelector((state) => state.auth);
 
-  const handleSubmit = (event) => {
+  useEffect(() => {
+    if (status === 'succeeded') {
+      navigate('/home');
+    }
+  }, [status, navigate]);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    dispatch(login({ email, password }));
   };
 
   return (
@@ -57,6 +70,7 @@ const LoginPage = () => {
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
+          {error && <Typography color="error">{error}</Typography>}
           <Button
             type="submit"
             fullWidth

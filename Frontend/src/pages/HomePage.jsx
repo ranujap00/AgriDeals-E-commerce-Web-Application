@@ -1,10 +1,13 @@
-// Home.jsx
-import React, { useState } from "react";
+// HomePage.jsx
+import React, { useEffect, useState } from "react";
 import { Typography, Button, Container, Grid } from "@mui/material";
 import Header from "../components/Header";
 import ProductCard from "../components/ProductCard";
 import Footer from "../components/Footer";
-import "../styles/HomePage.css"; 
+import "../styles/HomePage.css";
+import { useDispatch, useSelector } from "react-redux";
+import { addItem, removeItem } from "../store/cartSlice";
+import axios from "axios";
 
 const categories = [
   "Electronics",
@@ -16,51 +19,35 @@ const categories = [
   "Collectibles",
 ];
 
-const products = [
-  {
-    id: 1,
-    name: "Smartphone",
-    price: 299.99,
-    image: "/src/assets/product1.jpg",
-  },
-  { id: 2, name: "Laptop", price: 799.99, image: "/src/assets/product2.jpg" },
-  {
-    id: 3,
-    name: "Headphones",
-    price: 99.99,
-    image: "/src/assets/product3.jpg",
-  },
-  { id: 4, name: "Smart Watch", price: 149.99, image: "/src/assets/product4.jpg" },
-];
-
 const HomePage = () => {
-  const [cartItems, setCartItems] = useState([]);
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
 
   const addToCart = (product) => {
-    setCartItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.id === product.id);
-      if (existingItem) {
-        return prevItems.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-      return [...prevItems, { ...product, quantity: 1 }];
-    });
+    dispatch(addItem(product));
   };
 
   const removeFromCart = (productId) => {
-    setCartItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.id === productId);
-      if (existingItem.quantity === 1) {
-        return prevItems.filter((item) => item.id !== productId);
-      }
-      return prevItems.map((item) =>
-        item.id === productId ? { ...item, quantity: item.quantity - 1 } : item
-      );
-    });
+    dispatch(removeItem(productId));
   };
+
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}api/items/`
+        );
+        setProducts(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      }
+    };
+
+    fetchProduct();
+  }, []);
 
   return (
     <div className="home-container">
@@ -89,7 +76,7 @@ const HomePage = () => {
           >
             <Grid container spacing={4}>
               {products.map((product) => (
-                <Grid item key={product.id} xs={12} sm={6} md={3}>
+                <Grid item xs={12} sm={6} md={3} key={`grid-${product.id}`}>
                   <ProductCard product={product} addToCart={addToCart} />
                 </Grid>
               ))}
