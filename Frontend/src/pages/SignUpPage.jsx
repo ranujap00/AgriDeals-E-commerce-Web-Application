@@ -11,6 +11,8 @@ import {
 } from '@mui/material';
 import { PersonAddOutlined } from '@mui/icons-material';
 import axios from 'axios';
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
 
 const SignUpPage = () => {
   const [name, setName] = useState('');
@@ -26,11 +28,7 @@ const SignUpPage = () => {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:5000/api/users/signup', {
-        name,
-        email,
-        password,
-      });
+      await createUserWithEmailAndPassword(auth, email, password);
       // const { token } = response.data;
       // localStorage.setItem('token', token);
       window.location.href = '/login'; // Redirect to a different page after successful signup
