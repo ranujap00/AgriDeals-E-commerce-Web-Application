@@ -6,7 +6,7 @@ const ProductCard = ({ product, addToCart }) => {
   const navigate = useNavigate();
 
   const handleViewProduct = () => {
-    navigate(`/product/${product.id}`);
+    navigate(`/product/${product.item_id}`);
   };
 
   return (

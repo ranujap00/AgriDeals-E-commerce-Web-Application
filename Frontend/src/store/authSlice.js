@@ -1,24 +1,43 @@
+// authSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth } from '../firebase'; 
 
 export const login = createAsyncThunk('auth/login', async ({ email, password }) => {
   const userCredential = await signInWithEmailAndPassword(auth, email, password);
-  return userCredential.user;
+  return serializeUser(userCredential.user);
 });
+
+// Helper function to serialize user data
+const serializeUser = (user) => {
+  if (!user) return null;
+  return {
+    uid: user.uid,
+    email: user.email,
+    displayName: user.displayName,
+    photoURL: user.photoURL,
+  };
+};
 
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    token: localStorage.getItem('token') || null,
+    user: null,
     status: 'idle',
     error: null,
+    isLoading: true,
   },
   reducers: {
     logout: (state) => {
-      state.token = null;
-      localStorage.removeItem('token');
+      state.user = null;
       signOut(auth);
+    },
+    setUser: (state, action) => {
+      state.user = action.payload;
+      state.isLoading = false;
+    },
+    setLoading: (state, action) => {
+      state.isLoading = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -28,8 +47,7 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.token = action.payload.accessToken;
-        localStorage.setItem('token', action.payload.accessToken);
+        state.user = action.payload;
       })
       .addCase(login.rejected, (state, action) => {
         state.status = 'failed';
@@ -38,6 +56,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, setUser, setLoading } = authSlice.actions;
 
 export default authSlice.reducer;
