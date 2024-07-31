@@ -8,7 +8,7 @@ import Header from "../components/Header";
 import ProductCard from "../components/ProductCard";
 import Footer from "../components/Footer";
 
-const BASE_URI = process.env.REACT_APP_API_BASE_URL;
+const BASE_URI = process.env.REACT_APP_BASE_URL;
 
 const ViewProductPage = () => {
   const { item_id } = useParams();

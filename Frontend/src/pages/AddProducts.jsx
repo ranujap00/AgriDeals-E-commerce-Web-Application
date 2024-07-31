@@ -30,7 +30,7 @@ const categories = [
   "Collectibles",
 ];
 
-const BASE_URI = process.env.REACT_APP_API_BASE_URL;
+const BASE_URI = process.env.REACT_APP_BASE_URL;
 
 const AddProductPage = () => {
   const navigate = useNavigate();
