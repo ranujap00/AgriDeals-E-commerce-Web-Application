@@ -23,4 +23,4 @@ const AdvertiserSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('Advertiser', AdvertiserSchema);
+module.exports = AdvertiserSchema;
