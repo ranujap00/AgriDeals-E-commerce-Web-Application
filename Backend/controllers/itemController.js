@@ -8,7 +8,10 @@ const moment = require('moment');
 exports.postItem = async (req, res) => {
   try {
     const { product } = req.body;
+    const { user } = req.body;
+
     const { category, name, description, price, expiry_period, available_count, images } = product;
+    const { firstName, lastname, email, contactNumber, address } = user;
     
     const uuid = `itm-${uuidv4().split('-')[0]}`;
     
@@ -16,6 +19,14 @@ exports.postItem = async (req, res) => {
     const expiry_date = moment(post_date).add(expiry_period, 'days').toDate();
 
     // Create a new item with the provided data and the generated values
+    const newAdvertiser = {
+      f_name: firstName,
+      l_name: lastname,
+      email: email,
+      contact: contactNumber,
+      address: address
+    };
+    
     const newItem = new Item({
       item_id: uuid,
       name: name,
@@ -26,7 +37,8 @@ exports.postItem = async (req, res) => {
       expiry_date: expiry_date,
       available_count: available_count,
       status: "active",
-      images: images
+      images: images,
+      advertiser: newAdvertiser
     });
 
     await newItem.save();
