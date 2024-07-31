@@ -8,6 +8,8 @@ import Header from "../components/Header";
 import ProductCard from "../components/ProductCard";
 import Footer from "../components/Footer";
 
+const BASE_URI = process.env.REACT_APP_API_BASE_URL;
+
 const ViewProductPage = () => {
   const { item_id } = useParams();
   const [product, setProduct] = useState(null);
@@ -18,13 +20,13 @@ const ViewProductPage = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_BASE_URL}api/items/${item_id}`
+          `${BASE_URI}/api/items/${item_id}`
         );
         setProduct(response.data);
         console.log("products:"+ product)
 
         const relatedResponse = await axios.get(
-          `${process.env.REACT_APP_BASE_URL}api/items/`
+          `${BASE_URI}/api/items/`
         );
         setRelatedProducts(relatedResponse.data);
         console.log("Related products: " + relatedProducts)

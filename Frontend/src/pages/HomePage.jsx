@@ -18,6 +18,8 @@ const categories = [
   "Collectibles",
 ];
 
+const BASE_URI = process.env.REACT_APP_API_BASE_URL;
+
 const HomePage = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
@@ -36,7 +38,7 @@ const HomePage = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_BASE_URL}api/items/`
+          `${BASE_URI}/api/items/`
         );
         setProducts(response.data);
         console.log(response.data);
