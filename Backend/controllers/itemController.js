@@ -20,8 +20,8 @@ exports.postItem = async (req, res) => {
 
     // Create a new item with the provided data and the generated values
     const newAdvertiser = {
-      f_name: firstName,
-      l_name: lastname,
+      firstName: firstName,
+      lastname: lastname,
       email: email,
       contact: contactNumber,
       address: address
