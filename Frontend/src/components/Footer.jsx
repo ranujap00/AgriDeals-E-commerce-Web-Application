@@ -9,8 +9,8 @@ export default function Footer() {
     <Box
       component="footer"
       sx={{
-        py: 3,
-        px: 2,
+        py: 0.1,
+        px: 1,
         mt: "auto",
         backgroundColor: 'grey',
       }}
@@ -20,7 +20,7 @@ export default function Footer() {
           <Typography variant="body1" align="center">
           E-Commerce © {new Date().getFullYear()}
           </Typography>
-          <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 0.5 }}>
             <IconButton
               component={Link}
               href="https://github.com/"

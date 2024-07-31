@@ -1,22 +1,12 @@
+// HomePage.jsx
 import React, { useEffect, useState } from "react";
-import { Typography, Button, Container, Grid } from "@mui/material";
-import Header from "../components/Header";
+import { Typography, Container, Grid } from "@mui/material";
 import ProductCard from "../components/ProductCard";
 import Footer from "../components/Footer";
 import "../styles/HomePage.css";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem, removeItem } from "../store/cartSlice";
+import { addItem } from "../store/cartSlice";
 import axios from "axios";
-
-const categories = [
-  "Electronics",
-  "Fashion",
-  "Home & Garden",
-  "Sports",
-  "Toys",
-  "Motors",
-  "Collectibles",
-];
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -24,10 +14,6 @@ const HomePage = () => {
 
   const addToCart = (product) => {
     dispatch(addItem(product));
-  };
-
-  const removeFromCart = (productId) => {
-    dispatch(removeItem(productId));
   };
 
   const [products, setProducts] = useState([]);
@@ -50,17 +36,8 @@ const HomePage = () => {
 
   return (
     <div className="home-container">
-      <Header cartItems={cartItems} removeFromCart={removeFromCart} />
       <div className="content">
         <Container maxWidth="lg" sx={{ mt: 4 }}>
-          <Grid container spacing={2} sx={{ mb: 4 }}>
-            {categories.map((category, index) => (
-              <Grid item key={index}>
-                <Button variant="outlined">{category}</Button>
-              </Grid>
-            ))}
-          </Grid>
-
           <Typography variant="h4" gutterBottom>
             Featured Items
           </Typography>
@@ -75,7 +52,7 @@ const HomePage = () => {
           >
             <Grid container spacing={4}>
               {products.map((product) => (
-                <Grid item xs={12} sm={6} md={3} key={`grid-${product.item_id}`}>
+                <Grid item xs={12} sm={6} md={4} key={`grid-${product.item_id}`}>
                   <ProductCard product={product} addToCart={addToCart} />
                 </Grid>
               ))}
@@ -83,7 +60,6 @@ const HomePage = () => {
           </Container>
         </Container>
       </div>
-      <Footer />
     </div>
   );
 };
