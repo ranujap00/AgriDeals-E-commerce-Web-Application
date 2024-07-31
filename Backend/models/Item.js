@@ -1,6 +1,6 @@
 // models/Advertisement.js
 const mongoose = require('mongoose');
-const AdvertiserSchema = require('./Advertiser').schema;
+const AdvertiserSchema = require('./Advertiser');
 
 const ItemSchema = new mongoose.Schema({
   item_id: {
