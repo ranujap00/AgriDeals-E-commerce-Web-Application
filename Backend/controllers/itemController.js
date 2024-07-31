@@ -7,7 +7,8 @@ const moment = require('moment');
 // POST /api/items
 exports.postItem = async (req, res) => {
   try {
-    const { category, name, description, price, expiry_period, available_count, images } = req.body;
+    const { product } = req.body;
+    const { category, name, description, price, expiry_period, available_count, images } = product;
     
     const uuid = `itm-${uuidv4().split('-')[0]}`;
     
