@@ -59,11 +59,22 @@ const ViewProductPage = () => {
         <Paper elevation={3} sx={{ marginTop: 10 }}>
           <Grid container spacing={4} sx={{ p: 4 }}>
             <Grid item xs={12} md={6}>
-              <img
-                src={product.image}
-                alt={product.name}
-                style={{ width: "100%", height: "auto" }}
-              />
+              {product.images && product.images.length > 0 ? (
+                product.images.map((image, index) => (
+                  <img
+                    key={index}
+                    src={image}
+                    alt={`${product.name} image ${index + 1}`}
+                    style={{ width: "100%", height: "auto", marginBottom: "10px" }}
+                  />
+                ))
+              ) : (
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  style={{ width: "100%", height: "auto" }}
+                />
+              )}
             </Grid>
             <Grid item xs={12} md={6}>
               <Typography variant="h4" gutterBottom>
@@ -92,7 +103,7 @@ const ViewProductPage = () => {
                   variant="contained"
                   color="primary"
                   size="large"
-                  onClick={handleAddToCart}
+                  onClick={() => handleAddToCart(product)}
                 >
                   Add to Cart
                 </Button>

@@ -16,6 +16,7 @@ import ViewProductPage from "./pages/ViewProductsPage";
 import AuthWrapper from "./components/AuthWrapper";
 import AddProductPage from "./pages/AddProducts";
 import UpdateProductPage from "./pages/UpdateProduct";
+import Layout from "./components/Layout";
 
 const theme = createTheme({
   palette: {
@@ -40,7 +41,9 @@ function App() {
               path="/home"
               element={
                 <ProtectedRoute>
-                  <HomePage />
+                  <Layout>
+                    <HomePage />
+                  </Layout>
                 </ProtectedRoute>
               }
             />
@@ -53,7 +56,15 @@ function App() {
               }
             />
             <Route path="/product/:item_id" element={<ViewProductPage />} />
-            <Route path="/" element={<Navigate to="/login" />} />
+
+            <Route
+              path="/"
+              element={
+                <Layout>
+                  <Navigate to="/login" />{" "}
+                </Layout>
+              }
+            />
             <Route path="/product/add" element={<AddProductPage />} />
             <Route path="/product/update" element={<UpdateProductPage />} />
           </Routes>
