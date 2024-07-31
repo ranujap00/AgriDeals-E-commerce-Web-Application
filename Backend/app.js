@@ -7,11 +7,15 @@ const userRoutes = require('./routes/userRoutes');
 const itemRoutes = require('./routes/itemRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const { mongoURI } = require('./config/database');
+const cors = require('cors');
 
 const app = express();
 
+app.use(cors());
+
 // Middleware
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 // Routes
 app.use('/api/orders', orderRoutes);

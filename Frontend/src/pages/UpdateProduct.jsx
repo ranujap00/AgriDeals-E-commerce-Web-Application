@@ -30,6 +30,8 @@ const categories = [
   "Collectibles",
 ];
 
+const BASE_URI = process.env.REACT_APP_BASE_URL;
+
 const UpdateProductPage = () => {
   const navigate = useNavigate();
   const { itemId } = useParams();
@@ -51,7 +53,7 @@ const UpdateProductPage = () => {
     const fetchProductData = async () => {
       try {
         const response = await axios.get(
-          `https://agri-deals-5f3f0e7ec551.herokuapp.com/api/items/${itemId}`
+          `${BASE_URI}/api/items/${itemId}`
         );
         const product = response.data;
         setFormData({

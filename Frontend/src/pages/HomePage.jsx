@@ -8,6 +8,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "../store/cartSlice";
 import axios from "axios";
 
+const categories = [
+  "Electronics",
+  "Fashion",
+  "Home & Garden",
+  "Sports",
+  "Toys",
+  "Motors",
+  "Collectibles",
+];
+
 const HomePage = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
@@ -22,10 +32,10 @@ const HomePage = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_BASE_URL}api/items/`
+          `${BASE_URI}/api/items`
         );
         setProducts(response.data);
-        console.log(response.data);
+        console.log("items: ", response);
       } catch (error) {
         console.error("Error fetching product:", error);
       }
