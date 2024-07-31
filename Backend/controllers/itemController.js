@@ -11,7 +11,7 @@ exports.postItem = async (req, res) => {
     const { user } = req.body;
 
     const { category, name, description, price, expiry_period, available_count, images } = product;
-    const { firstName, lastname, email, contactNumber, address } = user;
+    const { firstName, lastName, email, contactNumber, address } = user;
     
     const uuid = `itm-${uuidv4().split('-')[0]}`;
     
@@ -21,7 +21,7 @@ exports.postItem = async (req, res) => {
     // Create a new item with the provided data and the generated values
     const newAdvertiser = {
       firstName: firstName,
-      lastname: lastname,
+      lastName: lastName,
       email: email,
       contact: contactNumber,
       address: address
