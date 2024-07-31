@@ -1,5 +1,6 @@
 // models/Advertisement.js
 const mongoose = require('mongoose');
+const AdvertiserSchema = require('./Advertiser').schema;
 
 const ItemSchema = new mongoose.Schema({
   item_id: {
@@ -40,6 +41,10 @@ const ItemSchema = new mongoose.Schema({
   },
   images: {
     type: [String],
+    required: true
+  },
+  advertiser: {
+    type: AdvertiserSchema,
     required: true
   },
 });
