@@ -8,15 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "../store/cartSlice";
 import axios from "axios";
 
-const categories = [
-  "Electronics",
-  "Fashion",
-  "Home & Garden",
-  "Sports",
-  "Toys",
-  "Motors",
-  "Collectibles",
-];
+const BASE_URI = process.env.REACT_APP_BASE_URL;
 
 const HomePage = () => {
   const dispatch = useDispatch();
