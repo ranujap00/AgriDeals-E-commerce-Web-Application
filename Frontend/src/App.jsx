@@ -67,6 +67,7 @@ function App() {
             />
             <Route path="/product/add" element={<AddProductPage />} />
             <Route path="/product/update" element={<UpdateProductPage />} />
+            <Route path="/product/checkout" element={<CheckoutPage />} />
           </Routes>
         </AuthWrapper>
       </Router>
