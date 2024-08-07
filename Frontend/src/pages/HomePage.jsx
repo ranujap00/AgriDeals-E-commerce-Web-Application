@@ -1,12 +1,5 @@
-// HomePage.jsx
 import React, { useEffect, useState } from "react";
-import {
-  Typography,
-  Container,
-  Grid,
-  CircularProgress,
-  Box,
-} from "@mui/material";
+import { Typography, Container, Grid, CircularProgress, Box } from "@mui/material";
 import ProductCard from "../components/ProductCard";
 import Footer from "../components/Footer";
 import "../styles/HomePage.css";
@@ -31,7 +24,6 @@ const HomePage = () => {
       try {
         const response = await axios.get(`${BASE_URI}/api/items`);
         setProducts(response.data);
-        console.log(response)
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
@@ -61,7 +53,7 @@ const HomePage = () => {
                 Featured Items
               </Typography>
               <Container
-                maxWidth="xl" 
+                maxWidth="xl"
                 style={{
                   flex: 1,
                   display: "flex",
@@ -71,17 +63,11 @@ const HomePage = () => {
                 }}
               >
                 <Grid container spacing={2}>
-                  {" "}
                   {products.map((product) => (
-                    <Grid
-                      item
-                      xs={6}
-                      sm={4}
-                      md={2}
-                      lg={1.7}
-                      key={`grid-${product.item_id}`}
-                    >
-                      <ProductCard product={product} addToCart={addToCart} />
+                    <Grid item xs={6} sm={4} md={3} lg={2} xl={1.7} key={`grid-${product.item_id}`}>
+                      <Box sx={{ height: '100%' }}>
+                        <ProductCard product={product} addToCart={addToCart} />
+                      </Box>
                     </Grid>
                   ))}
                 </Grid>

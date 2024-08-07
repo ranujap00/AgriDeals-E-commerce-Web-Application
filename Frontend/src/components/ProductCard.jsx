@@ -19,6 +19,9 @@ const ProductCard = ({ product, addToCart }) => {
     <Card
       onClick={handleCardClick}
       sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%', // Set a consistent height
         maxWidth: '100%',
         borderRadius: 2,
         boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
@@ -39,7 +42,7 @@ const ProductCard = ({ product, addToCart }) => {
           sx={{ borderTopLeftRadius: 8, borderTopRightRadius: 8 }}
         />
       )}
-      <CardContent sx={{ p: 1 }}>
+      <CardContent sx={{ p: 1, flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
         <Typography 
           variant="body2" 
           sx={{ 
@@ -58,13 +61,13 @@ const ProductCard = ({ product, addToCart }) => {
           variant="body1" 
           sx={{ 
             fontWeight: 'bold', 
-            color: '#f57224', 
+            color: '#f57224',
             mb: 0.5 
           }}
         >
           ${product.price.toFixed(2)}
         </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', mt: 'auto' }}>
           <Rating 
             name={`rating-${product.item_id}`} 
             value={product.rating || 0} 
