@@ -1,25 +1,51 @@
-// SideNavigation.jsx
-import React, { useState } from 'react';
-import { Box, List, ListItem, ListItemText, Collapse, Slider, Typography } from '@mui/material';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
+import React, { useState } from "react";
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+  Collapse,
+  Slider,
+  Typography,
+} from "@mui/material";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
 
-const categories = [
-  "Electronics",
-  "Fashion",
-  "Home & Garden",
-  "Sports",
-  "Toys",
-  "Motors",
-  "Collectibles",
+const mainCategories = [
+  {
+    name: "Agriculture Products and Services",
+    subcategories: [
+      "Agriculture Produce",
+      "Value Added Products",
+      "Agriculture Tools and Equipment",
+      "Fertilizer",
+      "Pesticides",
+    ],
+  },
+  {
+    name: "Other Products and Services",
+    subcategories: [
+      "Arts and Crafts",
+      "Clothing",
+      "Electronic Appliances",
+      "Home Decor",
+      "Educational Services",
+    ],
+  },
 ];
 
 const SideNavigation = ({ onCategorySelect, onPriceChange }) => {
-  const [open, setOpen] = useState(true);
+  const [openCategories, setOpenCategories] = useState({
+    agriculture: true,
+    other: true,
+  });
   const [priceRange, setPriceRange] = useState([0, 1000]);
 
-  const handleClick = () => {
-    setOpen(!open);
+  const handleCategoryClick = (category) => {
+    setOpenCategories((prevOpenCategories) => ({
+      ...prevOpenCategories,
+      [category]: !prevOpenCategories[category],
+    }));
   };
 
   const handlePriceChange = (event, newValue) => {
@@ -28,36 +54,44 @@ const SideNavigation = ({ onCategorySelect, onPriceChange }) => {
   };
 
   return (
-    <Box sx={{ width: 250, flexShrink: 0, borderRight: 1, borderColor: 'divider' }}>
+    <Box sx={{ width: 250, flexShrink: 0, borderRight: 1, borderColor: "divider", padding: 2 }}>
+      <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: 2 }}>
+        Product Categories
+      </Typography>
       <List>
-        <ListItem button onClick={handleClick}>
-          <ListItemText primary="Categories" />
-          {open ? <ExpandLess /> : <ExpandMore />}
-        </ListItem>
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            {categories.map((category, index) => (
-              <ListItem button key={index} sx={{ pl: 4 }} onClick={() => onCategorySelect(category)}>
-                <ListItemText primary={category} />
+        {mainCategories.map((mainCategory, index) => {
+          const isAgriculture = mainCategory.name === "Agriculture Products and Services";
+          const categoryKey = isAgriculture ? "agriculture" : "other";
+
+          return (
+            <React.Fragment key={index}>
+              <ListItem button onClick={() => handleCategoryClick(categoryKey)}>
+                <ListItemText 
+                  primary={
+                    <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+                      {mainCategory.name}
+                    </Typography>
+                  } 
+                />
+                {openCategories[categoryKey] ? <ExpandLess /> : <ExpandMore />}
               </ListItem>
-            ))}
-          </List>
-        </Collapse>
-        <ListItem>
-          <Box sx={{ width: '100%' }}>
-            <Typography gutterBottom>Price Range</Typography>
-            <Slider
-              value={priceRange}
-              onChange={handlePriceChange}
-              valueLabelDisplay="auto"
-              min={0}
-              max={1000}
-            />
-            <Typography variant="caption">
-              ${priceRange[0]} - ${priceRange[1]}
-            </Typography>
-          </Box>
-        </ListItem>
+              <Collapse in={openCategories[categoryKey]} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  {mainCategory.subcategories.map((subcategory, subIndex) => (
+                    <ListItem
+                      button
+                      key={subIndex}
+                      sx={{ pl: 4 }}
+                      onClick={() => onCategorySelect(subcategory)}
+                    >
+                      <ListItemText primary={subcategory} />
+                    </ListItem>
+                  ))}
+                </List>
+              </Collapse>
+            </React.Fragment>
+          );
+        })}
       </List>
     </Box>
   );

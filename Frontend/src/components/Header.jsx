@@ -60,7 +60,7 @@ function Header() {
           sx={{ flexGrow: 1, cursor: "pointer", fontWeight: "bold" }}
           onClick={handleHomeNavigation}
         >
-          E-Commerce
+          Agri Deals
         </Typography>
         <TextField
           placeholder="Search for anything"
