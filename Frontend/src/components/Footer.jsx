@@ -1,5 +1,4 @@
 // Footer.jsx
-
 import React from "react";
 import { Box, Container, Typography, Link, IconButton } from "@mui/material";
 import { GitHub, LinkedIn, Twitter } from "@mui/icons-material";
@@ -9,18 +8,17 @@ export default function Footer() {
     <Box
       component="footer"
       sx={{
-        py: 0.1,
+        py: 2,
         px: 1,
-        mt: "auto",
         backgroundColor: 'grey',
       }}
     >
       <Container maxWidth="sm">
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Typography variant="body1" align="center">
-          E-Commerce © {new Date().getFullYear()}
+            E-Commerce © {new Date().getFullYear()}
           </Typography>
-          <Box sx={{ display: "flex", justifyContent: "center", mt: 0.5 }}>
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 1 }}>
             <IconButton
               component={Link}
               href="https://github.com/"

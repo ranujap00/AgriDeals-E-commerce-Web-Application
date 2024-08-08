@@ -1,6 +1,6 @@
 // Layout.jsx
 import React from "react";
-import { Box } from "@mui/material";
+import { Box, CssBaseline } from "@mui/material";
 import Header from "./Header";
 import { useDispatch, useSelector } from "react-redux";
 import SideNavigation from './SideNavigation';
@@ -26,11 +26,12 @@ const Layout = ({ children }) => {
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", height: "100vh" }}>
-      <Header cartItems={cartItems} removeFromCart={removeFromCart} />
-      <Box sx={{ display: "flex", flexGrow: 1, overflow: "hidden" }}>
-        <SideNavigation onCategorySelect={handleCategorySelect} onPriceChange={handlePriceChange} />
-        <Box sx={{ flexGrow: 1, overflowY: "auto", p: 2 }}>
+    <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      <CssBaseline />
+      <Header />
+      <Box sx={{ display: "flex", flex: "1 1 auto" }}>
+        <SideNavigation />
+        <Box sx={{ flexGrow: 1, p: 2, overflowY: "auto" }}>
           {children}
         </Box>
       </Box>

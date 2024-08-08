@@ -52,7 +52,7 @@ function Header() {
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#3f51b5" }}>
+    <AppBar position="fixed" sx={{ backgroundColor: "#3f51b5" }}>
       <Toolbar>
         <Typography
           variant="h6"

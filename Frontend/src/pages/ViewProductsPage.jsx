@@ -1,45 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Container, Grid, Typography, Button, Box, Paper, CircularProgress } from "@mui/material";
+import { Container, Grid, Typography, Button, Box, CircularProgress, IconButton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, removeItem } from "../store/cartSlice";
 import axios from "axios";
-import Slider from "react-slick";
 import Header from "../components/Header";
 import ProductCard from "../components/ProductCard";
 import Footer from "../components/Footer";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import "@fortawesome/fontawesome-free/css/all.min.css";
-import ProductImageCarousel from "../components/ProductImageCarousel";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 
 const BASE_URI = process.env.REACT_APP_BASE_URL;
-
-const CustomPrevArrow = ({ className, style, onClick }) => (
-  <div
-    className={className}
-    style={{ ...style, display: "block", left: -30, zIndex: 1, color: "grey" }}
-    onClick={onClick}
-  >
-    <i className="fas fa-chevron-left"></i>
-  </div>
-);
-
-const CustomNextArrow = ({ className, style, onClick }) => (
-  <div
-    className={className}
-    style={{ ...style, display: "block", right: -30, zIndex: 1, color: "grey" }}
-    onClick={onClick}
-  >
-    <i className="fas fa-chevron-right"></i>
-  </div>
-);
 
 const ViewProductsPage = () => {
   const { item_id } = useParams();
   const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [quantity, setQuantity] = useState(1);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -62,16 +40,28 @@ const ViewProductsPage = () => {
 
   const cartItems = useSelector((state) => state.cart.items);
 
-  const handleAddToCart = (product) => {
-    dispatch(addItem(product));
+  const handleAddToCart = () => {
+    const productToAdd = { ...product, quantity };
+    dispatch(addItem(productToAdd));
+    setQuantity(1); // Reset quantity to 1 after adding to cart
   };
 
-  const handleBuyNow = (product) => {
-    dispatch(addItem(product));
+  const handleBuyNow = () => {
+    const productToAdd = { ...product, quantity };
+    dispatch(addItem(productToAdd));
+    // You can add additional functionality here to proceed to checkout immediately
   };
 
   const removeFromCart = (productId) => {
     dispatch(removeItem(productId));
+  };
+
+  const handleQuantityIncrease = () => {
+    setQuantity((prevQuantity) => prevQuantity + 1);
+  };
+
+  const handleQuantityDecrease = () => {
+    setQuantity((prevQuantity) => Math.max(prevQuantity - 1, 1));
   };
 
   if (loading) {
@@ -86,111 +76,99 @@ const ViewProductsPage = () => {
     return <Typography>Something went wrong!</Typography>;
   }
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    nextArrow: <CustomNextArrow />,
-    prevArrow: <CustomPrevArrow />,
-  };
-
-  const relatedSettings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    nextArrow: <CustomNextArrow />,
-    prevArrow: <CustomPrevArrow />,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-          infinite: true,
-          dots: false,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-          initialSlide: 2,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-  };
-
   return (
     <>
       <Header cartItems={cartItems} removeFromCart={removeFromCart} />
       <Container maxWidth="lg" sx={{ mt: 4 }}>
-        <Paper elevation={3} sx={{ mt: 10, p: 4, borderRadius: 2 }}>
-          <Grid container spacing={4}>
-            <Grid item xs={12} md={8}>
-            <ProductImageCarousel images={product.images} />
-            </Grid>
-            <Grid item xs={12} md={4} container direction="column" spacing={3}>
-              <Grid item>
-                <Paper elevation={3} sx={{ p: 2, borderRadius: 2 }}>
-                  <Typography
-                    variant="h4"
-                    component="h1"
-                    sx={{ fontWeight: "bold", mb: 2 }}
+        <Grid container spacing={4}>
+          {/* Left Side: Main Product Content */}
+          <Grid item xs={12} md={8}>
+            <Box sx={{ mt: 10, p: 4 }}>
+              <Grid container spacing={4}>
+                <Grid item xs={12} md={6}>
+                  <Box
+                    sx={{
+                      width: "100%",
+                      height: 400,
+                      overflow: "hidden",
+                      borderRadius: 2,
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
                   >
+                    <img
+                      src={product.images[0]}
+                      alt={product.name}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "contain",
+                      }}
+                    />
+                  </Box>
+                  <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+                    {product.images.slice(1).map((image, index) => (
+                      <Box
+                        key={index}
+                        sx={{
+                          width: 80,
+                          height: 80,
+                          overflow: "hidden",
+                          borderRadius: 1,
+                          mr: 1,
+                          cursor: "pointer",
+                        }}
+                      >
+                        <img
+                          src={image}
+                          alt={`Product image ${index + 2}`}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                          }}
+                        />
+                      </Box>
+                    ))}
+                  </Box>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="h4" component="h1" sx={{ fontWeight: "bold", mb: 1 }}>
                     {product.name}
                   </Typography>
-                  <Typography
-                    variant="subtitle1"
-                    sx={{ mb: 1, color: "text.secondary", fontSize: "1.3rem" }}
-                  >
-                    Category: {product.category}
-                  </Typography>
-                  <Typography variant="body1" sx={{ mb: 3, fontSize: "1.3rem" }}>
-                    {product.description}
-                  </Typography>
-                  <Typography
-                    variant="h5"
-                    color="primary"
-                    sx={{ mb: 2, fontWeight: "bold", fontSize: "1.3rem" }}
-                  >
-                    ${product.price.toFixed(2)}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{ mb: 1, color: "text.secondary", fontSize: "1.3rem" }}
-                  >
+                  <Typography variant="subtitle1" sx={{ mb: 1, color: "text.secondary" }}>
                     Item ID: {product.item_id}
                   </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{ mb: 1, color: "text.secondary", fontSize: "1.3rem" }}
-                  >
-                    Posted on: {new Date(product.post_date).toLocaleDateString()}
+                  <Typography variant="subtitle1" sx={{ mb: 2, color: "text.secondary" }}>
+                    Category: {product.category}
                   </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{ mb: 3, color: "text.secondary", fontSize: "1.3rem" }}
-                  >
+                  <Typography variant="h3" color="primary" sx={{ mb: 2, fontWeight: "bold" }}>
+                    ${product.price.toFixed(2)}
+                  </Typography>
+                  <Typography variant="body1" sx={{ mb: 2, color: "text.secondary" }}>
                     Available: {product.available_count}
                   </Typography>
-                  <Box display="flex" gap={2}>
+                  <Box display="flex" alignItems="center" gap={2} sx={{ mb: 2 }}>
+                    <IconButton
+                      color="primary"
+                      size="small"
+                      onClick={handleQuantityDecrease}
+                      disabled={quantity === 1}
+                    >
+                      <RemoveIcon />
+                    </IconButton>
+                    <Typography variant="body1">{quantity}</Typography>
+                    <IconButton color="primary" size="small" onClick={handleQuantityIncrease}>
+                      <AddIcon />
+                    </IconButton>
+                  </Box>
+                  <Box display="flex" gap={2} sx={{ mb: 4 }}>
                     <Button
                       variant="contained"
                       color="primary"
                       size="large"
-                      onClick={() => handleAddToCart(product)}
+                      onClick={handleAddToCart}
                       sx={{
                         px: 4,
                         py: 1.5,
@@ -208,7 +186,7 @@ const ViewProductsPage = () => {
                       variant="contained"
                       color="secondary"
                       size="large"
-                      onClick={() => handleBuyNow(product)}
+                      onClick={handleBuyNow}
                       sx={{
                         px: 4,
                         py: 1.5,
@@ -223,51 +201,45 @@ const ViewProductsPage = () => {
                       Buy Now
                     </Button>
                   </Box>
-                </Paper>
+                  <Typography variant="body1">{product.description}</Typography>
+                </Grid>
               </Grid>
-              {/* <Grid item>
-                <Paper elevation={3} sx={{ p: 2, borderRadius: 2 }}>
-                  <Typography variant="h6" component="h2" sx={{ mb: 2 }}>
-                    Shipping Details
-                  </Typography>
-                  <Typography variant="body1" sx={{ mb: 1 }}>
-                    Free shipping on orders over $50.
-                  </Typography>
-                  <Typography variant="body1" sx={{ mb: 1 }}>
-                    Estimated delivery: 5-7 business days.
-                  </Typography>
-                  <Typography variant="body1" sx={{ mb: 1 }}>
-                    For expedited shipping, please contact us.
-                  </Typography>
-                  <Typography variant="body1">
-                    Shipping costs are calculated at checkout.
-                  </Typography>
-                </Paper>
-              </Grid> */}
-            </Grid>
+            </Box>
           </Grid>
-        </Paper>
+
+          {/* Right Side: Product Details */}
+          <Grid item xs={12} md={4}>
+            <Box sx={{ mt: 10, p: 4 }}>
+              <Typography variant="h6" gutterBottom>
+                Shipping Details
+              </Typography>
+              <Typography variant="body1" sx={{ mb: 2 }}>
+                Shipping Address: {product.shippingAddress || "N/A"}
+              </Typography>
+              <Typography variant="body1" sx={{ mb: 2 }}>
+                Shipping Fee: ${"N/A"}
+              </Typography>
+              <Typography variant="body1" sx={{ mb: 2 }}>
+                Warranty: {product.warranty || "N/A"}
+              </Typography>
+              <Typography variant="body1" sx={{ mb: 2 }}>
+                Seller Rating: {product.sellerRating ? `${product.sellerRating}%` : "N/A"}
+              </Typography>
+            </Box>
+          </Grid>
+        </Grid>
 
         <Box sx={{ mt: 4 }}>
           <Typography variant="h5" gutterBottom>
             Related Products
           </Typography>
-          <Slider {...relatedSettings} style={{ padding: "0" }}>
+          <Grid container spacing={2}>
             {relatedProducts.map((relatedProduct) => (
-              <Box
-                key={`grid-${relatedProduct.id}`}
-                sx={{
-                  p: 1,
-                  boxSizing: "border-box",
-                }}
-              >
-                <ProductCard
-                  product={relatedProduct}
-                  addToCart={handleAddToCart}
-                />
-              </Box>
+              <Grid item xs={12} sm={6} md={4} key={`grid-${relatedProduct.id}`}>
+                <ProductCard product={relatedProduct} addToCart={handleAddToCart} />
+              </Grid>
             ))}
-          </Slider>
+          </Grid>
         </Box>
       </Container>
       <Footer />

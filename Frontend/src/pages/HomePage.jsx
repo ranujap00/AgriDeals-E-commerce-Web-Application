@@ -37,7 +37,7 @@ const HomePage = () => {
   return (
     <div className="home-container">
       <div className="content">
-        <Container maxWidth="xl" sx={{ mt: 4 }}>
+        <Container maxWidth="xl" sx={{ mt: 8 }}>
           {loading ? (
             <Box
               display="flex"
