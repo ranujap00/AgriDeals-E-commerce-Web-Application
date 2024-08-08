@@ -50,7 +50,7 @@ const HomePage = () => {
           ) : (
             <>
               <Typography variant="h4" gutterBottom>
-                Featured Items
+                Popular Products
               </Typography>
               <Container
                 maxWidth="xl"
