@@ -11,6 +11,7 @@ import Footer from "../components/Footer";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import ProductImageCarousel from "../components/ProductImageCarousel";
 
 const BASE_URI = process.env.REACT_APP_BASE_URL;
 
@@ -67,7 +68,6 @@ const ViewProductsPage = () => {
 
   const handleBuyNow = (product) => {
     dispatch(addItem(product));
-    // You can add additional functionality here to proceed to checkout immediately
   };
 
   const removeFromCart = (productId) => {
@@ -139,37 +139,7 @@ const ViewProductsPage = () => {
         <Paper elevation={3} sx={{ mt: 10, p: 4, borderRadius: 2 }}>
           <Grid container spacing={4}>
             <Grid item xs={12} md={8}>
-              {product.images && product.images.length > 0 ? (
-                <Slider {...settings}>
-                  {product.images.map((image, index) => (
-                    <Box
-                      key={index}
-                      sx={{
-                        width: "100%",
-                        height: 400, // Set a fixed height for the images
-                        overflow: "hidden", // Hide any overflow
-                        borderRadius: 8,
-                      }}
-                    >
-                      <img
-                        src={image}
-                        alt={`${product.name} image ${index + 1}`}
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "cover", // Maintain aspect ratio
-                        }}
-                      />
-                    </Box>
-                  ))}
-                </Slider>
-              ) : (
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  style={{ width: "100%", height: "auto", borderRadius: 8 }}
-                />
-              )}
+            <ProductImageCarousel images={product.images} />
             </Grid>
             <Grid item xs={12} md={4} container direction="column" spacing={3}>
               <Grid item>
@@ -287,7 +257,7 @@ const ViewProductsPage = () => {
               <Box
                 key={`grid-${relatedProduct.id}`}
                 sx={{
-                  p: 1, // Adjust padding to reduce the gap
+                  p: 1,
                   boxSizing: "border-box",
                 }}
               >
