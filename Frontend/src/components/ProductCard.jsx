@@ -47,7 +47,7 @@ const ProductCard = ({ product, addToCart }) => {
           variant="body2" 
           sx={{ 
             mb: 0.5, 
-            height: '32px', 
+            height: '36px', 
             overflow: 'hidden', 
             textOverflow: 'ellipsis', 
             display: '-webkit-box', 
