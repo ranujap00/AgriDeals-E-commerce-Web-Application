@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Container, Grid, Typography, Button, Box, CircularProgress, IconButton } from "@mui/material";
+import {
+  Container,
+  Grid,
+  Typography,
+  Button,
+  Box,
+  CircularProgress,
+  IconButton,
+} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, removeItem } from "../store/cartSlice";
 import axios from "axios";
@@ -66,7 +74,16 @@ const ViewProductsPage = () => {
 
   if (loading) {
     return (
-      <Container maxWidth="lg" sx={{ mt: 4, display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+      <Container
+        maxWidth="lg"
+        sx={{
+          mt: 4,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "80vh",
+        }}
+      >
         <CircularProgress size={60} />
       </Container>
     );
@@ -107,7 +124,9 @@ const ViewProductsPage = () => {
                       }}
                     />
                   </Box>
-                  <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+                  <Box
+                    sx={{ display: "flex", justifyContent: "center", mt: 2 }}
+                  >
                     {product.images.slice(1).map((image, index) => (
                       <Box
                         key={index}
@@ -134,22 +153,44 @@ const ViewProductsPage = () => {
                   </Box>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Typography variant="h4" component="h1" sx={{ fontWeight: "bold", mb: 1 }}>
+                  <Typography
+                    variant="h4"
+                    component="h1"
+                    sx={{ fontWeight: "bold", mb: 1 }}
+                  >
                     {product.name}
                   </Typography>
-                  <Typography variant="subtitle1" sx={{ mb: 1, color: "text.secondary" }}>
+                  <Typography
+                    variant="subtitle1"
+                    sx={{ mb: 1, color: "text.secondary" }}
+                  >
                     Item ID: {product.item_id}
                   </Typography>
-                  <Typography variant="subtitle1" sx={{ mb: 2, color: "text.secondary" }}>
+                  <Typography
+                    variant="subtitle1"
+                    sx={{ mb: 2, color: "text.secondary" }}
+                  >
                     Category: {product.category}
                   </Typography>
-                  <Typography variant="h3" color="primary" sx={{ mb: 2, fontWeight: "bold" }}>
+                  <Typography
+                    variant="h3"
+                    color="primary"
+                    sx={{ mb: 2, fontWeight: "bold" }}
+                  >
                     ${product.price.toFixed(2)}
                   </Typography>
-                  <Typography variant="body1" sx={{ mb: 2, color: "text.secondary" }}>
+                  <Typography
+                    variant="body1"
+                    sx={{ mb: 2, color: "text.secondary" }}
+                  >
                     Available: {product.available_count}
                   </Typography>
-                  <Box display="flex" alignItems="center" gap={2} sx={{ mb: 2 }}>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    gap={2}
+                    sx={{ mb: 2 }}
+                  >
                     <IconButton
                       color="primary"
                       size="small"
@@ -159,7 +200,11 @@ const ViewProductsPage = () => {
                       <RemoveIcon />
                     </IconButton>
                     <Typography variant="body1">{quantity}</Typography>
-                    <IconButton color="primary" size="small" onClick={handleQuantityIncrease}>
+                    <IconButton
+                      color="primary"
+                      size="small"
+                      onClick={handleQuantityIncrease}
+                    >
                       <AddIcon />
                     </IconButton>
                   </Box>
@@ -170,7 +215,7 @@ const ViewProductsPage = () => {
                       size="large"
                       onClick={handleAddToCart}
                       sx={{
-                        px: 4,
+                        px: 3,
                         py: 1.5,
                         borderRadius: 2,
                         fontSize: "1rem",
@@ -178,9 +223,10 @@ const ViewProductsPage = () => {
                         "&:hover": {
                           boxShadow: "0 8px 16px rgba(0,0,0,0.3)",
                         },
+                        minWidth: 140,
                       }}
                     >
-                      Add to Cart
+                      <Typography noWrap>Add to Cart</Typography>
                     </Button>
                     <Button
                       variant="contained"
@@ -188,7 +234,7 @@ const ViewProductsPage = () => {
                       size="large"
                       onClick={handleBuyNow}
                       sx={{
-                        px: 4,
+                        px: 3,
                         py: 1.5,
                         borderRadius: 2,
                         fontSize: "1rem",
@@ -196,9 +242,10 @@ const ViewProductsPage = () => {
                         "&:hover": {
                           boxShadow: "0 8px 16px rgba(0,0,0,0.3)",
                         },
+                        minWidth: 140,
                       }}
                     >
-                      Buy Now
+                      <Typography noWrap>Buy Now</Typography>
                     </Button>
                   </Box>
                   <Typography variant="body1">{product.description}</Typography>
@@ -223,20 +270,34 @@ const ViewProductsPage = () => {
                 Warranty: {product.warranty || "N/A"}
               </Typography>
               <Typography variant="body1" sx={{ mb: 2 }}>
-                Seller Rating: {product.sellerRating ? `${product.sellerRating}%` : "N/A"}
+                Seller Rating:{" "}
+                {product.sellerRating ? `${product.sellerRating}%` : "N/A"}
               </Typography>
             </Box>
           </Grid>
         </Grid>
 
-        <Box sx={{ mt: 4 }}>
+        <Box sx={{ mt: 4, mb: 2 }}>
           <Typography variant="h5" gutterBottom>
             Related Products
           </Typography>
           <Grid container spacing={2}>
             {relatedProducts.map((relatedProduct) => (
-              <Grid item xs={12} sm={6} md={4} key={`grid-${relatedProduct.id}`}>
-                <ProductCard product={relatedProduct} addToCart={handleAddToCart} />
+              <Grid
+                item
+                xs={6}
+                sm={4}
+                md={3}
+                lg={2}
+                xl={1.7}
+                key={`grid-${relatedProduct.item_id}`}
+              >
+                <Box sx={{ height: "100%" }}>
+                  <ProductCard
+                    product={relatedProduct}
+                    addToCart={handleAddToCart}
+                  />
+                </Box>
               </Grid>
             ))}
           </Grid>
