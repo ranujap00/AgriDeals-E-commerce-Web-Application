@@ -24,10 +24,9 @@ const categories = [
   "Electronics",
   "Fashion",
   "Home & Garden",
-  "Sports",
-  "Toys",
-  "Motors",
-  "Collectibles",
+  "Agriculture",
+  "Fertilizer",
+  "Pesticides",
 ];
 
 const BASE_URI = process.env.REACT_APP_BASE_URL;
