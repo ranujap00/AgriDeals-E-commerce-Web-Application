@@ -1,4 +1,4 @@
 module.exports = {
-    mongoURI: 'mongodb+srv://rndtech1services:dPiDwoZCxOz4Z0Zi@agrideals.0cgsq5y.mongodb.net/agri-deals?retryWrites=true&w=majority&appName=AgriDeals'
+    mongoURI: 'mongodb+srv://kynolabs:KL-20001017-RAD@agrideals.1y9ni.mongodb.net/?retryWrites=true&w=majority&appName=AgriDeals'
   };
   
