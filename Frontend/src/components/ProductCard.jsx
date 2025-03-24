@@ -4,15 +4,12 @@ import {
   CardContent,
   CardMedia,
   Typography,
-  IconButton,
-  Tooltip,
   CardActions,
   Box,
   Rating,
   Button,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { ShoppingBag } from "@mui/icons-material";
 
 const ProductCard = ({ product, addToCart }) => {

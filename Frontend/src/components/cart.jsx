@@ -2,7 +2,13 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Divider from "@mui/material/Divider";
-import { Badge, Button, IconButton, Stack, Typography } from "@mui/material";
+import {
+  Badge,
+  Button,
+  IconButton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import {
   CloseRounded,
   Remove,
@@ -39,7 +45,7 @@ export default function Cart() {
       </IconButton>
       <Drawer open={open} onClose={toggleCart(false)} anchor="right">
         <Box
-          sx={{ width: 320 }}
+          sx={{ width: 320, overflow: "hidden" }}
           role="presentation"
           onClick={toggleCart(false)}
         >
@@ -58,41 +64,46 @@ export default function Cart() {
             </IconButton>
           </Stack>
           <Divider />
-          {cartItems.map((item) => (
-            <Box key={item.id} display="flex" alignItems="center" p={2}>
-              <img
-                src={item.images[0]}
-                alt={item.name}
-                style={{
-                  width: 64,
-                  height: 64,
-                  objectFit: "cover",
-                  marginRight: 10,
-                  borderRadius: 4,
-                }}
-              />
-              <Box flexGrow={1}>
-                <Typography variant="subtitle1">
-                  {item.name} {item.quantity > 1 && `(x${item.quantity})`}
-                </Typography>
-                <Typography variant="body2">
-                  ${(item.price * item.quantity).toFixed(2)}
-                </Typography>
+          <Box sx={{ height: "calc(100vh - 142px)", overflowY: "auto" }}>
+            {cartItems.map((item, idx) => (
+              <Box key={idx} display="flex" alignItems="center" p={2}>
+                <img
+                  src={item.images[0]}
+                  alt={item.name}
+                  style={{
+                    width: 64,
+                    height: 64,
+                    objectFit: "cover",
+                    marginRight: 10,
+                    borderRadius: 4,
+                  }}
+                />
+                <Box flexGrow={1}>
+                  <Typography variant="subtitle1">
+                    {item.name} {item.quantity > 1 && `(x${item.quantity})`}
+                  </Typography>
+                  <Typography variant="body2">
+                    ${(item.price * item.quantity).toFixed(2)}
+                  </Typography>
+                </Box>
+                <IconButton
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    dispatch(removeItem(item.item_id));
+                  }}
+                  size="small"
+                  sx={{
+                    backgroundColor: "#f5f5f5",
+                    "&:hover": {
+                      backgroundColor: "#e0e0e0",
+                    },
+                  }}
+                >
+                  <Remove />
+                </IconButton>
               </Box>
-              <IconButton
-                onClick={() => dispatch(removeItem(item.id))}
-                size="small"
-                sx={{
-                  backgroundColor: "#f5f5f5",
-                  "&:hover": {
-                    backgroundColor: "#e0e0e0",
-                  },
-                }}
-              >
-                <Remove />
-              </IconButton>
-            </Box>
-          ))}
+            ))}
+          </Box>
           <Box
             sx={{
               position: "absolute",
@@ -100,8 +111,14 @@ export default function Cart() {
               bottom: 0,
             }}
           >
-            <Divider />
-            <Box p={2}>
+            <Box
+              p={2}
+              sx={{
+                borderTop: 1,
+                borderColor: "grey.400",
+                backgroundColor: "white",
+              }}
+            >
               <Button
                 variant="contained"
                 color="primary"
