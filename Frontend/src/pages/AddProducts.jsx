@@ -132,7 +132,7 @@ const AddProductPage = () => {
       );
 
       console.log("Product added:", response.data);
-      navigate("/home");
+      navigate("/");
     } catch (error) {
       console.error("Error adding product:", error);
     }

@@ -13,7 +13,7 @@ function Header() {
   const location = useLocation();
 
   const handleHomeNavigation = () => {
-    navigate("/home");
+    navigate("/");
   };
 
   return (

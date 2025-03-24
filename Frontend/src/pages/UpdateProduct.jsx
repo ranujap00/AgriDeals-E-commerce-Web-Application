@@ -142,7 +142,7 @@ const UpdateProductPage = () => {
       );
 
       console.log("Product updated:", response.data);
-      navigate("/home");
+      navigate("/");
     } catch (error) {
       console.error("Error updating product:", error);
     }

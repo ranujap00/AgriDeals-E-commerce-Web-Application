@@ -39,7 +39,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignUpPage />} />
             <Route
-              path="/home"
+              path="/"
               element={
                 <ProtectedRoute>
                   <Layout>
@@ -58,7 +58,6 @@ function App() {
             />
             <Route path="/product/:item_id" element={<ViewProductPage />} />
 
-            <Route path="/" element={<Navigate to="/home" />} />
             <Route path="/product/add" element={<AddProductPage />} />
             <Route path="/product/update" element={<UpdateProductPage />} />
             <Route path="/product/checkout" element={<CheckoutPage />} />

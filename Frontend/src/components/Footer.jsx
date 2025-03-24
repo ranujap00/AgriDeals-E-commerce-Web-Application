@@ -31,7 +31,7 @@ export default function Footer() {
               component="div"
               color="primary"
               sx={{ cursor: "pointer", fontWeight: "bold", mb: 4 }}
-              onClick={() => navigate("/home")}
+              onClick={() => navigate("/")}
             >
               Agri Deals
             </Typography>
