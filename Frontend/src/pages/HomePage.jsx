@@ -10,11 +10,9 @@ import ProductCard from "../components/ProductCard";
 import "../styles/HomePage.css";
 import { useDispatch } from "react-redux";
 import { addItem } from "../store/cartSlice";
-import axios from "axios";
+import { getItems } from "../api";
 
-const BASE_URI = process.env.REACT_APP_BASE_URL;
-
-const HomePage = () => {
+const HomePage = ({ category }) => {
   const dispatch = useDispatch();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,19 +22,23 @@ const HomePage = () => {
   };
 
   useEffect(() => {
+    if (!category) {
+      return;
+    }
     const fetchProduct = async () => {
+      setLoading(true);
       try {
-        const response = await axios.get(`${BASE_URI}/api/items`);
-        setProducts(response.data);
+        const items = await getItems(category);
+        setProducts(items);
       } catch (error) {
+        setProducts(null);
         console.error("Error fetching products:", error);
       } finally {
         setLoading(false);
       }
     };
-
     fetchProduct();
-  }, []);
+  }, [category]);
 
   return (
     <div className="home-container">
@@ -53,8 +55,12 @@ const HomePage = () => {
             </Box>
           ) : (
             <>
-              <Typography variant="h6" gutterBottom>
-                All Products
+              <Typography
+                variant="h6"
+                gutterBottom
+                sx={{ textTransform: "capitalize" }}
+              >
+                {category} Products
               </Typography>
               <Container
                 maxWidth="xl"
@@ -66,15 +72,20 @@ const HomePage = () => {
                   padding: "1rem 0",
                 }}
               >
-                <Grid container spacing={2}>
-                  {products.map((product) => (
-                    <Grid item key={`grid-${product.item_id}`}>
-                      <Box sx={{ height: "100%" }}>
-                        <ProductCard product={product} addToCart={addToCart} />
-                      </Box>
-                    </Grid>
-                  ))}
-                </Grid>
+                {products ? (
+                  <Grid container spacing={2}>
+                    {products.map((product) => (
+                      <Grid item key={`grid-${product.item_id}`}>
+                        <Box sx={{ height: "100%" }}>
+                          <ProductCard
+                            product={product}
+                            addToCart={addToCart}
+                          />
+                        </Box>
+                      </Grid>
+                    ))}
+                  </Grid>
+                ): <Typography textAlign="center">No item found in {category}</Typography>}
               </Container>
             </>
           )}

@@ -5,11 +5,11 @@ import {
   ListItem,
   ListItemText,
   Collapse,
-  Slider,
   Typography,
 } from "@mui/material";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import { Spa } from "@mui/icons-material";
 
 const mainCategories = [
   {
@@ -57,13 +57,20 @@ const SideNavigation = ({ onCategorySelect, onPriceChange }) => {
     <Box
       sx={{
         flexShrink: 0,
-        py: 2,
+        p: 2,
         mt: 10,
         maxWidth: 280,
       }}
     >
       <Typography variant="h6">Product Categories</Typography>
       <List>
+        <ListItem
+          sx={{ cursor: "pointer" }}
+          onClick={() => onCategorySelect("all")}
+        >
+          <Spa color="primary" sx={{mr: 2}}/>
+          <ListItemText primary="All Products" />
+        </ListItem>
         {mainCategories.map((mainCategory, index) => {
           const isAgriculture =
             mainCategory.name === "Agriculture Products and Services";
@@ -73,6 +80,7 @@ const SideNavigation = ({ onCategorySelect, onPriceChange }) => {
             <React.Fragment key={index}>
               <ListItem onClick={() => handleCategoryClick(categoryKey)}>
                 <ListItemText
+                  sx={{ cursor: "pointer" }}
                   primary={<Typography>{mainCategory.name}</Typography>}
                 />
                 {openCategories[categoryKey] ? <ExpandLess /> : <ExpandMore />}
@@ -86,7 +94,7 @@ const SideNavigation = ({ onCategorySelect, onPriceChange }) => {
                   {mainCategory.subcategories.map((subcategory, subIndex) => (
                     <ListItem
                       key={subIndex}
-                      sx={{ pl: 4 }}
+                      sx={{ pl: 4, cursor: "pointer" }}
                       onClick={() => onCategorySelect(subcategory)}
                     >
                       <ListItemText primary={subcategory} />
