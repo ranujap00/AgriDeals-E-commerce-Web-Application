@@ -8,6 +8,11 @@ import {
   Box,
   CircularProgress,
   IconButton,
+  Rating,
+  Stack,
+  Divider,
+  Tabs,
+  Tab,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, removeItem } from "../store/cartSlice";
@@ -17,6 +22,8 @@ import ProductCard from "../components/ProductCard";
 import Footer from "../components/Footer";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { ShoppingBag } from "@mui/icons-material";
+import TabPanel from "../components/tabPanel";
 
 const BASE_URI = process.env.REACT_APP_BASE_URL;
 
@@ -27,6 +34,8 @@ const ViewProductsPage = () => {
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const dispatch = useDispatch();
+  const [activeImage, setActiveImage] = useState(0);
+  const [activeTab, setActiveTab] = useState(0);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -96,202 +105,197 @@ const ViewProductsPage = () => {
   return (
     <>
       <Header cartItems={cartItems} removeFromCart={removeFromCart} />
-      <Container maxWidth="lg" sx={{ mt: 4 }}>
-        <Grid container spacing={4}>
-          {/* Left Side: Main Product Content */}
-          <Grid item xs={12} md={8}>
-            <Box sx={{ mt: 10, p: 4 }}>
-              <Grid container spacing={4}>
-                <Grid item xs={12} md={6}>
+      <Container maxWidth="lg" sx={{ mt: 14 }}>
+        <Stack spacing={4} direction="row">
+          <Box width="100%" xs={8}>
+            <Box
+              sx={{
+                position: "sticky",
+                top: "120px",
+              }}
+            >
+              <Box
+                sx={{
+                  width: "100%",
+                  overflow: "hidden",
+                  borderRadius: 2,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  mb: 1,
+                  aspectRatio: 1 / 1,
+                  backgroundColor: "secondary.main",
+                }}
+              >
+                <img
+                  src={product.images[activeImage]}
+                  alt={product.name}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                  }}
+                />
+              </Box>
+              <Stack
+                direction="row"
+                sx={{ width: "100%" }}
+                justifyContent="center"
+                spacing={2}
+              >
+                {product.images.map((image, idx) => (
                   <Box
+                    key={idx}
+                    width={64}
+                    height={64}
+                    borderRadius={2}
+                    overflow="hidden"
                     sx={{
-                      width: "100%",
-                      height: 400,
-                      overflow: "hidden",
-                      borderRadius: 2,
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
+                      backgroundColor: "secondary.main",
+                      opacity: activeImage !== idx ? 0.5 : 1,
+                      cursor: "pointer",
                     }}
+                    boxShadow={2}
+                    onClick={() => setActiveImage(idx)}
                   >
                     <img
-                      src={product.images[0]}
-                      alt={product.name}
+                      src={image}
+                      alt={`${product.name}_image_${idx}`}
                       style={{
-                        width: "100%",
                         height: "100%",
+                        width: "100%",
                         objectFit: "contain",
                       }}
                     />
                   </Box>
-                  <Box
-                    sx={{ display: "flex", justifyContent: "center", mt: 2 }}
-                  >
-                    {product.images.slice(1).map((image, index) => (
-                      <Box
-                        key={index}
-                        sx={{
-                          width: 80,
-                          height: 80,
-                          overflow: "hidden",
-                          borderRadius: 1,
-                          mr: 1,
-                          cursor: "pointer",
-                        }}
-                      >
-                        <img
-                          src={image}
-                          alt={`Product image ${index + 2}`}
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover",
-                          }}
-                        />
-                      </Box>
-                    ))}
-                  </Box>
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <Typography
-                    variant="h4"
-                    component="h1"
-                    sx={{ fontWeight: "bold", mb: 1 }}
-                  >
-                    {product.name}
-                  </Typography>
-                  <Typography
-                    variant="subtitle1"
-                    sx={{ mb: 1, color: "text.secondary" }}
-                  >
-                    Item ID: {product.item_id}
-                  </Typography>
-                  <Typography
-                    variant="subtitle1"
-                    sx={{ mb: 2, color: "text.secondary" }}
-                  >
-                    Category: {product.category}
-                  </Typography>
-                  <Typography
-                    variant="h3"
-                    color="primary"
-                    sx={{ mb: 2, fontWeight: "bold" }}
-                  >
-                    ${product.price.toFixed(2)}
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    sx={{ mb: 2, color: "text.secondary" }}
-                  >
-                    Available: {product.available_count}
-                  </Typography>
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    gap={2}
-                    sx={{ mb: 2 }}
-                  >
-                    <IconButton
-                      color="primary"
-                      size="small"
-                      onClick={handleQuantityDecrease}
-                      disabled={quantity === 1}
-                    >
-                      <RemoveIcon />
-                    </IconButton>
-                    <Typography variant="body1">{quantity}</Typography>
-                    <IconButton
-                      color="primary"
-                      size="small"
-                      onClick={handleQuantityIncrease}
-                    >
-                      <AddIcon />
-                    </IconButton>
-                  </Box>
-                  <Box display="flex" gap={2} sx={{ mb: 4 }}>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      size="large"
-                      onClick={handleAddToCart}
-                      sx={{
-                        px: 3,
-                        py: 1.5,
-                        borderRadius: 2,
-                        fontSize: "1rem",
-                        boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
-                        "&:hover": {
-                          boxShadow: "0 8px 16px rgba(0,0,0,0.3)",
-                        },
-                        minWidth: 140,
-                      }}
-                    >
-                      <Typography noWrap>Add to Cart</Typography>
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      size="large"
-                      onClick={handleBuyNow}
-                      sx={{
-                        px: 3,
-                        py: 1.5,
-                        borderRadius: 2,
-                        fontSize: "1rem",
-                        boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
-                        "&:hover": {
-                          boxShadow: "0 8px 16px rgba(0,0,0,0.3)",
-                        },
-                        minWidth: 140,
-                      }}
-                    >
-                      <Typography noWrap>Buy Now</Typography>
-                    </Button>
-                  </Box>
-                  <Typography variant="body1">{product.description}</Typography>
-                </Grid>
-              </Grid>
+                ))}
+              </Stack>
             </Box>
-          </Grid>
+          </Box>
 
-          {/* Right Side: Product Details */}
-          <Grid item xs={12} md={4}>
-            <Box sx={{ mt: 10, p: 4 }}>
-              <Typography variant="h6" gutterBottom>
-                Shipping Details
+          <Box xs={8} width="100%">
+            <Typography
+              variant="h4"
+              component="h1"
+              sx={{ fontWeight: "bold", mb: 2 }}
+            >
+              {product.name}
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              sx={{ mb: 2, color: "text.secondary" }}
+            >
+              Category: {product.category}
+            </Typography>
+            <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+              <Typography color="text.secondary" sx={{ mr: 0.5 }}>
+                Rated:
               </Typography>
-              <Typography variant="body1" sx={{ mb: 2 }}>
-                Shipping Address: {product.shippingAddress || "N/A"}
-              </Typography>
-              <Typography variant="body1" sx={{ mb: 2 }}>
-                Shipping Fee: ${"N/A"}
-              </Typography>
-              <Typography variant="body1" sx={{ mb: 2 }}>
-                Warranty: {product.warranty || "N/A"}
-              </Typography>
-              <Typography variant="body1" sx={{ mb: 2 }}>
-                Seller Rating:{" "}
-                {product.sellerRating ? `${product.sellerRating}%` : "N/A"}
+              <Rating
+                name={`rating-${product.item_id}`}
+                value={product.rating || 0}
+                precision={0.5}
+                size="small"
+                readOnly
+              />
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ ml: 0.5 }}
+              >
+                ({product.ratingCount || 0})
               </Typography>
             </Box>
-          </Grid>
-        </Grid>
+            <Typography
+              variant="h4"
+              color="primary"
+              sx={{ mb: 1, fontWeight: "bold" }}
+            >
+              ${product.price.toFixed(2)}
+            </Typography>
+            <Typography variant="body1" sx={{ mb: 2, color: "text.secondary" }}>
+              Available Stock: {product.available_count}
+            </Typography>
+            <Box display="flex" alignItems="center" gap={2} sx={{ mb: 2 }}>
+              <IconButton
+                color="primary"
+                size="small"
+                onClick={handleQuantityDecrease}
+                disabled={quantity === 1}
+              >
+                <RemoveIcon />
+              </IconButton>
+              <Typography variant="body1">{quantity}</Typography>
+              <IconButton
+                color="primary"
+                size="small"
+                onClick={handleQuantityIncrease}
+              >
+                <AddIcon />
+              </IconButton>
+            </Box>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleAddToCart}
+              startIcon={<ShoppingBag />}
+              sx={{
+                px: 4,
+                py: 1,
+                mb: 2,
+                borderRadius: "25px",
+              }}
+            >
+              <Typography noWrap>Add to Cart</Typography>
+            </Button>
 
-        <Box sx={{ mt: 4, mb: 2 }}>
+            <Box sx={{ width: "100%" }}>
+              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                <Tabs
+                  value={activeTab}
+                  onChange={(e, value) => setActiveTab(value)}
+                  aria-label="Product specifications"
+                >
+                  <Tab label="Description" />
+                  <Tab label="Shipping Details" />
+                  <Tab label="Reviews" />
+                </Tabs>
+              </Box>
+
+              <TabPanel value={activeTab} index={0}>
+                <Typography variant="body1">{product.description}</Typography>
+              </TabPanel>
+
+              <TabPanel value={activeTab} index={1}>
+                <Typography variant="body1" sx={{ mb: 1 }}>
+                  Shipping Address: {product.shippingAddress || "N/A"}
+                </Typography>
+                <Typography variant="body1" sx={{ mb: 1 }}>
+                  Shipping Fee: ${"N/A"}
+                </Typography>
+                <Typography variant="body1" sx={{ mb: 1 }}>
+                  Warranty: {product.warranty || "N/A"}
+                </Typography>
+                <Typography variant="body1" sx={{ mb: 1 }}>
+                  Seller Rating:{" "}
+                  {product.sellerRating ? `${product.sellerRating}%` : "N/A"}
+                </Typography>
+              </TabPanel>
+
+              <TabPanel value={activeTab} index={2}>
+                <Typography variant="body1">Reviews</Typography>
+              </TabPanel>
+            </Box>
+          </Box>
+        </Stack>
+
+        <Box sx={{ my: 4 }}>
           <Typography variant="h5" gutterBottom>
             Related Products
           </Typography>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} mt={2}>
             {relatedProducts.map((relatedProduct) => (
-              <Grid
-                item
-                xs={6}
-                sm={4}
-                md={3}
-                lg={2}
-                xl={1.7}
-                key={`grid-${relatedProduct.item_id}`}
-              >
+              <Grid item key={`grid-${relatedProduct.item_id}`}>
                 <Box sx={{ height: "100%" }}>
                   <ProductCard
                     product={relatedProduct}

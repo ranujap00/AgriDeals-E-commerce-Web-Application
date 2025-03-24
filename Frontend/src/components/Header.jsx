@@ -23,7 +23,7 @@ function Header() {
         boxShadow: "1px 1px 25px rgba(0, 0, 0, 0.15)",
       }}
     >
-      <Toolbar sx={{ display: "flex", justifyContent: "space-between", width: "100%", maxWidth: "1280px", mx: "auto" }}>
+      <Toolbar sx={{ display: "flex", justifyContent: "space-between", width: "100%", maxWidth: "1240px", mx: "auto" }}>
         <Typography
           variant="h6"
           component="div"

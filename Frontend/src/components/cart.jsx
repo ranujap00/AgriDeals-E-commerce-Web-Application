@@ -59,12 +59,7 @@ export default function Cart() {
           </Stack>
           <Divider />
           {cartItems.map((item) => (
-            <Box
-              key={item.id}
-              display="flex"
-              alignItems="center"
-              p={2}
-            >
+            <Box key={item.id} display="flex" alignItems="center" p={2}>
               <img
                 src={item.images[0]}
                 alt={item.name}
@@ -112,6 +107,9 @@ export default function Cart() {
                 color="primary"
                 fullWidth
                 onClick={handleCheckout}
+                sx={{
+                  borderRadius: "25px",
+                }}
               >
                 Checkout
               </Button>

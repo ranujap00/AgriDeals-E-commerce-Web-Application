@@ -29,7 +29,7 @@ const Layout = ({ children }) => {
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <CssBaseline />
       <Header />
-      <Box sx={{ display: "flex", flex: "1 1 auto", width: "100%", maxWidth: "1280px", mx: "auto", px: 4 }}>
+      <Box maxWidth="lg" sx={{ display: "flex", flex: "1 1 auto", width: "100%", mx: "auto" }}>
         <SideNavigation />
         <Box sx={{ p: 2, overflowY: "auto", flexGrow: "1" }}>{children}</Box>
       </Box>
