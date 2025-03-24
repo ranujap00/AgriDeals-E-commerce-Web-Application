@@ -17,6 +17,7 @@ import AuthWrapper from "./components/AuthWrapper";
 import AddProductPage from "./pages/AddProducts";
 import UpdateProductPage from "./pages/UpdateProduct";
 import Layout from "./components/Layout";
+import Admin from "./pages/admin";
 
 const theme = createTheme({
   palette: {
@@ -61,6 +62,9 @@ function App() {
             <Route path="/product/add" element={<AddProductPage />} />
             <Route path="/product/update" element={<UpdateProductPage />} />
             <Route path="/product/checkout" element={<CheckoutPage />} />
+            <Route path="/admin">
+              <Route index element={<Admin />} />
+            </Route>
           </Routes>
         </AuthWrapper>
       </Router>
