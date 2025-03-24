@@ -57,14 +57,7 @@ function App() {
             />
             <Route path="/product/:item_id" element={<ViewProductPage />} />
 
-            <Route
-              path="/"
-              element={
-                <Layout>
-                  <Navigate to="/login" />{" "}
-                </Layout>
-              }
-            />
+            <Route path="/" element={<Navigate to="/home" />} />
             <Route path="/product/add" element={<AddProductPage />} />
             <Route path="/product/update" element={<UpdateProductPage />} />
             <Route path="/product/checkout" element={<CheckoutPage />} />

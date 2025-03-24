@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -10,22 +10,23 @@ import {
   Link,
   Grid,
   Paper,
-} from '@mui/material';
-import { LockOutlined } from '@mui/icons-material';
-import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../store/authSlice';
-import { useNavigate } from 'react-router-dom';
+  Stack,
+} from "@mui/material";
+import { LockOutlined } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../store/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { token, error, status } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (status === 'succeeded') {
-      navigate('/home');
+    if (status === "succeeded") {
+      navigate("/home");
     }
   }, [status, navigate]);
 
@@ -36,11 +37,22 @@ const LoginPage = () => {
 
   return (
     <Container component="main" maxWidth="xs">
-      <Paper elevation={3} sx={{ mt: 8, p: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <LockOutlined sx={{ m: 1, bgcolor: 'secondary.main', p: 2, borderRadius: '50%', color: 'white' }} />
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
+      <Paper
+        elevation={3}
+        sx={{
+          mt: 8,
+          p: 4,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Stack direction="row" alignItems="center" spacing={2}>
+          <LockOutlined color="primary" />
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+        </Stack>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
@@ -86,7 +98,7 @@ const LoginPage = () => {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="signup" variant="body2">
+              <Link href="/signup" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>

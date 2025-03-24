@@ -14,9 +14,7 @@ export default function ProfileMenu() {
   const open = Boolean(anchorEl);
 
   const user = useSelector((state) => state.auth.user);
-
-  console.log(user);
-
+  
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };

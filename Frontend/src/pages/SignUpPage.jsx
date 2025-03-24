@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -8,42 +8,56 @@ import {
   Link,
   Grid,
   Paper,
-} from '@mui/material';
-import { PersonAddOutlined } from '@mui/icons-material';
-import axios from 'axios';
+  Stack,
+} from "@mui/material";
+import { PersonAddOutlined } from "@mui/icons-material";
+import axios from "axios";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
+import { login } from "../store/authSlice";
+import { useDispatch } from "react-redux";
 
 const SignUpPage = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const dispatch = useDispatch();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      setError("Passwords do not match");
       return;
     }
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      // const { token } = response.data;
-      // localStorage.setItem('token', token);
-      window.location.href = '/login'; // Redirect to a different page after successful signup
+      dispatch(login({ email, password }));
     } catch (error) {
-      setError('Error signing up');
+      setError("Error signing up");
     }
   };
 
   return (
     <Container component="main" maxWidth="xs">
-      <Paper elevation={3} sx={{ mt: 8, p: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <PersonAddOutlined sx={{ m: 1, bgcolor: 'secondary.main', p: 2, borderRadius: '50%', color: 'white' }} />
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
+      <Paper
+        elevation={3}
+        sx={{
+          mt: 8,
+          p: 4,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Stack direction="row" alignItems="center" spacing={2}>
+          <PersonAddOutlined color="primary" />
+          <Typography component="h1" variant="h5">
+            Sign up
+          </Typography>
+        </Stack>
+
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
