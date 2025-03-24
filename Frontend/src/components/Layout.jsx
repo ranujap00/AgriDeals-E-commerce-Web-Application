@@ -3,7 +3,7 @@ import React from "react";
 import { Box, CssBaseline } from "@mui/material";
 import Header from "./Header";
 import { useDispatch, useSelector } from "react-redux";
-import SideNavigation from './SideNavigation';
+import SideNavigation from "./SideNavigation";
 import { removeItem } from "../store/cartSlice";
 import Footer from "./Footer";
 
@@ -29,11 +29,9 @@ const Layout = ({ children }) => {
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <CssBaseline />
       <Header />
-      <Box sx={{ display: "flex", flex: "1 1 auto" }}>
+      <Box sx={{ display: "flex", flex: "1 1 auto", width: "100%", maxWidth: "1280px", mx: "auto", px: 4 }}>
         <SideNavigation />
-        <Box sx={{ flexGrow: 1, p: 2, overflowY: "auto" }}>
-          {children}
-        </Box>
+        <Box sx={{ p: 2, overflowY: "auto", flexGrow: "1" }}>{children}</Box>
       </Box>
       <Footer />
     </Box>

@@ -21,10 +21,10 @@ import Layout from "./components/Layout";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#e53935",
+      main: "#02542c",
     },
     secondary: {
-      main: "#2b78e4",
+      main: "#e4f0e6",
     },
   },
 });
