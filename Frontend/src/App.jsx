@@ -4,7 +4,6 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
-  Navigate,
 } from "react-router-dom";
 import LoginPage from "../src/pages/LoginPage";
 import SignUpPage from "../src/pages/SignUpPage";
@@ -34,20 +33,8 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <AuthWrapper>
-          <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignUpPage />} />
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute>
-                  <Layout>
-                    <HomePage />
-                  </Layout>
-                </ProtectedRoute>
-              }
-            />
+        <Routes>
+          <Route element={<AuthWrapper />}>
             <Route
               path="/checkout"
               element={
@@ -56,16 +43,25 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route path="/product/:item_id" element={<ViewProductPage />} />
-
             <Route path="/product/add" element={<AddProductPage />} />
             <Route path="/product/update" element={<UpdateProductPage />} />
             <Route path="/product/checkout" element={<CheckoutPage />} />
             <Route path="/admin">
               <Route index element={<Admin />} />
             </Route>
-          </Routes>
-        </AuthWrapper>
+          </Route>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route
+            path="/"
+            element={
+              <Layout>
+                <HomePage />
+              </Layout>
+            }
+          />
+          <Route path="/product/:item_id" element={<ViewProductPage />} />
+        </Routes>
       </Router>
     </ThemeProvider>
   );

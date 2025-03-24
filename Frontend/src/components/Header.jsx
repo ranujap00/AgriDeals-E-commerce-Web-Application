@@ -3,14 +3,16 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import { InputAdornment, TextField, Stack } from "@mui/material";
+import { InputAdornment, TextField, Stack, Button } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import Cart from "./cart";
 import ProfileMenu from "./profileMenu";
+import { useSelector } from "react-redux";
 
 function Header() {
   const navigate = useNavigate();
   const location = useLocation();
+  const user = useSelector((state) => state.auth.user);
 
   const handleHomeNavigation = () => {
     navigate("/");
@@ -70,15 +72,17 @@ function Header() {
             ),
           }}
         />
-        <Stack
-          direction="row"
-          spacing={2}
-          alignItems="center"
-          justifyContent="center"
-        >
-          {location.pathname !== "/checkout" && <Cart />}
-          <ProfileMenu />
-        </Stack>
+        {user ? (
+          <Stack
+            direction="row"
+            spacing={2}
+            alignItems="center"
+            justifyContent="center"
+          >
+            {location.pathname !== "/checkout" && <Cart />}
+            <ProfileMenu />
+          </Stack>
+        ) : <Button variant="text" onClick={() => navigate('/login')}>Sign in</Button>}
       </Toolbar>
     </AppBar>
   );

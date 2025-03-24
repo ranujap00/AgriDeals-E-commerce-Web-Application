@@ -27,10 +27,7 @@ const AuthWrapper = ({ children }) => {
         dispatch(setUser(serializeUser(authUser)));
       } else {
         dispatch(logout());
-        const publicRoutes = ["/login", "/signup"];
-        if (!publicRoutes.includes(location.pathname)) {
-          navigate("/login");
-        }
+        navigate("/login");
       }
       dispatch(setLoading(false));
     });

@@ -1,7 +1,7 @@
 // authSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { auth } from '../firebase'; 
+import { auth } from '../firebase';
 
 export const login = createAsyncThunk('auth/login', async ({ email, password }) => {
   const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -30,6 +30,8 @@ const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       state.user = null;
+      state.status = null;
+      state.isLoading = null;
       signOut(auth);
     },
     setUser: (state, action) => {
