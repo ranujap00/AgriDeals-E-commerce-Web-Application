@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -10,6 +10,7 @@ import ProfileMenu from "./profileMenu";
 
 function Header() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleHomeNavigation = () => {
     navigate("/home");
@@ -23,7 +24,15 @@ function Header() {
         boxShadow: "1px 1px 25px rgba(0, 0, 0, 0.15)",
       }}
     >
-      <Toolbar sx={{ display: "flex", justifyContent: "space-between", width: "100%", maxWidth: "1240px", mx: "auto" }}>
+      <Toolbar
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          width: "100%",
+          maxWidth: "1240px",
+          mx: "auto",
+        }}
+      >
         <Typography
           variant="h6"
           component="div"
@@ -61,8 +70,13 @@ function Header() {
             ),
           }}
         />
-        <Stack direction="row" spacing={2} alignItems="center" justifyContent="center">
-          <Cart />
+        <Stack
+          direction="row"
+          spacing={2}
+          alignItems="center"
+          justifyContent="center"
+        >
+          {location.pathname !== "/checkout" && <Cart />}
           <ProfileMenu />
         </Stack>
       </Toolbar>
