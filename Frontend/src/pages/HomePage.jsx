@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Container, Grid, CircularProgress, Box } from "@mui/material";
+import {
+  Typography,
+  Container,
+  Grid,
+  CircularProgress,
+  Box,
+} from "@mui/material";
 import ProductCard from "../components/ProductCard";
-import Footer from "../components/Footer";
 import "../styles/HomePage.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addItem } from "../store/cartSlice";
 import axios from "axios";
 
@@ -11,7 +16,6 @@ const BASE_URI = process.env.REACT_APP_BASE_URL;
 
 const HomePage = () => {
   const dispatch = useDispatch();
-  const cartItems = useSelector((state) => state.cart.items);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -36,8 +40,8 @@ const HomePage = () => {
 
   return (
     <div className="home-container">
-      <div className="content">
-        <Container maxWidth="xl" sx={{ mt: 8 }}>
+      <Box className="content">
+        <Container sx={{ mt: 10 }}>
           {loading ? (
             <Box
               display="flex"
@@ -49,8 +53,8 @@ const HomePage = () => {
             </Box>
           ) : (
             <>
-              <Typography variant="h4" gutterBottom>
-                Popular Products
+              <Typography variant="h6" gutterBottom>
+                All Products
               </Typography>
               <Container
                 maxWidth="xl"
@@ -64,8 +68,8 @@ const HomePage = () => {
               >
                 <Grid container spacing={2}>
                   {products.map((product) => (
-                    <Grid item xs={6} sm={4} md={3} lg={2} xl={1.7} key={`grid-${product.item_id}`}>
-                      <Box sx={{ height: '100%' }}>
+                    <Grid item key={`grid-${product.item_id}`}>
+                      <Box sx={{ height: "100%" }}>
                         <ProductCard product={product} addToCart={addToCart} />
                       </Box>
                     </Grid>
@@ -75,7 +79,7 @@ const HomePage = () => {
             </>
           )}
         </Container>
-      </div>
+      </Box>
     </div>
   );
 };

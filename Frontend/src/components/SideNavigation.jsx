@@ -54,32 +54,37 @@ const SideNavigation = ({ onCategorySelect, onPriceChange }) => {
   };
 
   return (
-    <Box sx={{ width: 250, flexShrink: 0, borderRight: 1, borderColor: "divider", padding: 2 }}>
-      <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: 2 }}>
-        Product Categories
-      </Typography>
+    <Box
+      sx={{
+        flexShrink: 0,
+        py: 2,
+        mt: 10,
+        maxWidth: 280,
+      }}
+    >
+      <Typography variant="h6">Product Categories</Typography>
       <List>
         {mainCategories.map((mainCategory, index) => {
-          const isAgriculture = mainCategory.name === "Agriculture Products and Services";
+          const isAgriculture =
+            mainCategory.name === "Agriculture Products and Services";
           const categoryKey = isAgriculture ? "agriculture" : "other";
 
           return (
             <React.Fragment key={index}>
-              <ListItem button onClick={() => handleCategoryClick(categoryKey)}>
-                <ListItemText 
-                  primary={
-                    <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-                      {mainCategory.name}
-                    </Typography>
-                  } 
+              <ListItem onClick={() => handleCategoryClick(categoryKey)}>
+                <ListItemText
+                  primary={<Typography>{mainCategory.name}</Typography>}
                 />
                 {openCategories[categoryKey] ? <ExpandLess /> : <ExpandMore />}
               </ListItem>
-              <Collapse in={openCategories[categoryKey]} timeout="auto" unmountOnExit>
+              <Collapse
+                in={openCategories[categoryKey]}
+                timeout="auto"
+                unmountOnExit
+              >
                 <List component="div" disablePadding>
                   {mainCategory.subcategories.map((subcategory, subIndex) => (
                     <ListItem
-                      button
                       key={subIndex}
                       sx={{ pl: 4 }}
                       onClick={() => onCategorySelect(subcategory)}
