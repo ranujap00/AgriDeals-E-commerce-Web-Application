@@ -18,6 +18,25 @@ export const getItems = async (category) => {
     return await axios.get(`${API_URL}/items`).then((res) => res.data);
 }
 
+export const getItem = async (id) => {
+    return await axios.get(`${API_URL}/items/${id}`).then((res) => res.data);
+}
+
+export const updateItem = async (id, data) => {
+    return await axios.put(
+        `${API_URL}/items/${id}`,
+        data,
+        {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }
+    );
+}
+export const deleteItem = async (id) => {
+    return await axios.delete(`${API_URL}/items/${id}`);
+}
+
 export const search = async (query) => {
     return axios.get(`${API_URL}/items/search/${query}`).then((res) => res.data);
 }

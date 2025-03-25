@@ -94,12 +94,38 @@ exports.getItemByCategory = async (req, res) => {
 // PUT /api/items/:id
 exports.updateItem = async (req, res) => {
   try {
-    const { title, description, imageURL } = req.body;
-    const item = await Item.findByIdAndUpdate(
-      req.params.id,
-      { title, description, imageURL },
+    const {
+      name,
+      category,
+      description,
+      price,
+      post_date,
+      expiry_date,
+      available_count,
+      status,
+      images,
+    } = req.body;
+
+    const item = await Item.findOneAndUpdate(
+      { item_id: req.params.id },
+      {
+        name,
+        category,
+        description,
+        price,
+        post_date: new Date(post_date),
+        expiry_date: new Date(expiry_date),
+        available_count,
+        status,
+        images,
+      },
       { new: true }
     );
+
+    if (!item) {
+      return res.status(404).json({ msg: 'Item not found' });
+    }
+
     res.json(item);
   } catch (err) {
     console.error(err.message);

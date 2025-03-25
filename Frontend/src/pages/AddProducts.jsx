@@ -126,7 +126,7 @@ const AddProductPage = () => {
       });
 
       console.log("Product added:", response.data);
-      navigate("/");
+      navigate("/admin");
     } catch (error) {
       console.error("Error adding product:", error);
     }
@@ -159,7 +159,9 @@ const AddProductPage = () => {
           <form onSubmit={handleSubmit}>
             {currentStep === 0 && (
               <Box maxWidth="sm">
-                <Typography variant="h6" gutterBottom>Enter seller information</Typography>
+                <Typography variant="h6" gutterBottom>
+                  Enter seller information
+                </Typography>
                 <TextField
                   fullWidth
                   label="First Name"

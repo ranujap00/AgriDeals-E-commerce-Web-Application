@@ -62,7 +62,7 @@ export default function Admin() {
           (sum, order) => sum + (order.total_price || 0),
           0
         );
-        
+
         setCounts({
           orders: ordersData.length,
           products: productsData.length,
@@ -138,11 +138,16 @@ export default function Admin() {
               <Typography variant="h4" gutterBottom>
                 Products
               </Typography>
-              <Button onClick={() => navigate('/admin/product/add')} variant="contained" color="primary" startIcon={<Add />}>
+              <Button
+                onClick={() => navigate("/admin/product/add")}
+                variant="contained"
+                color="primary"
+                startIcon={<Add />}
+              >
                 <Typography>Add new product</Typography>
               </Button>
             </Stack>
-            <ProductsTable data={products} />
+            <ProductsTable data={products} setData={setProducts} />
           </>
         )}
         {activeTab === 1 && (

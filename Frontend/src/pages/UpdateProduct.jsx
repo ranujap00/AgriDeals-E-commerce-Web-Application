@@ -13,12 +13,11 @@ import {
   InputLabel,
   IconButton,
 } from "@mui/material";
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-import Header from "../components/Header";
+import Header from "../components/admin/header";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Footer from "../components/Footer";
+import { getItem, updateItem } from "../api";
 
 const categories = [
   "Electronics",
@@ -29,8 +28,6 @@ const categories = [
   "Motors",
   "Collectibles",
 ];
-
-const BASE_URI = process.env.REACT_APP_BASE_URL;
 
 const UpdateProductPage = () => {
   const navigate = useNavigate();
@@ -47,15 +44,17 @@ const UpdateProductPage = () => {
     status: "active",
   });
   const [images, setImages] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [previewImages, setPreviewImages] = useState([]);
 
   useEffect(() => {
+    if (!itemId) {
+      return;
+    }
     const fetchProductData = async () => {
       try {
-        const response = await axios.get(
-          `${BASE_URI}/api/items/${itemId}`
-        );
-        const product = response.data;
+        const response = await getItem(itemId);
+        const product = response;
         setFormData({
           item_id: product.item_id,
           name: product.name,
@@ -84,18 +83,49 @@ const UpdateProductPage = () => {
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
-    setImages([...images, ...files]);
 
-    const newPreviewImages = files.map((file) => URL.createObjectURL(file));
-    setPreviewImages([...previewImages, ...newPreviewImages]);
+    const newImagePromises = files.map(
+      (file) =>
+        new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = (event) =>
+            resolve({ file, base64: event.target.result });
+          reader.onerror = (error) => reject(error);
+          reader.readAsDataURL(file);
+        })
+    );
+
+    Promise.all(newImagePromises)
+      .then((newImages) => {
+        const uniqueImages = newImages.filter(
+          (newImage) =>
+            !images.some(
+              (existingImage) => existingImage.name === newImage.file.name
+            ) &&
+            !previewImages.some(
+              (existingImage) => existingImage === newImage.base64
+            )
+        );
+
+        setImages((prevImages) => [
+          ...prevImages,
+          ...uniqueImages.map((img) => img.file),
+        ]);
+        setPreviewImages((prevPreviews) => [
+          ...prevPreviews,
+          ...uniqueImages.map((img) => img.base64),
+        ]);
+      })
+      .catch((error) => {
+        console.error("Error converting images to Base64:", error);
+      });
   };
 
   const handleRemoveImage = (index) => {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
     setPreviewImages((prevPreviews) => {
       const newPreviews = prevPreviews.filter((_, i) => i !== index);
-      prevPreviews[index].preview &&
-        URL.revokeObjectURL(prevPreviews[index].preview);
+      URL.revokeObjectURL(prevPreviews[index]);
       return newPreviews;
     });
   };
@@ -108,38 +138,35 @@ const UpdateProductPage = () => {
       name: formData.name,
       category: formData.category,
       description: formData.description,
-      price: parseFloat(formData.price), 
+      price: parseFloat(formData.price),
       post_date: new Date(formData.post_date).toISOString(),
-      expiry_date: new Date(formData.expiry_date).toISOString(), 
+      expiry_date: new Date(formData.expiry_date).toISOString(),
       available_count: parseInt(formData.available_count),
       status: formData.status,
-      images: [], 
+      images: [...previewImages],
     };
-    const imagePromises = images.map(
-      (image) =>
-        new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = (event) => resolve(event.target.result);
-          reader.onerror = (error) => reject(error);
-          reader.readAsDataURL(image);
-        })
-    );
+
+    const newImagePromises = images
+      .filter((image) => image instanceof File)
+      .map(
+        (image) =>
+          new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (event) => resolve(event.target.result);
+            reader.onerror = (error) => reject(error);
+            reader.readAsDataURL(image);
+          })
+      );
 
     try {
-      const imageData = await Promise.all(imagePromises);
-      productData.images = imageData;
+      const newImageData = await Promise.all(newImagePromises);
+
+      const allImages = [...productData.images, ...newImageData];
+      productData.images = Array.from(new Set(allImages));
 
       console.log("Product Data being sent:", productData);
 
-      const response = await axios.put(
-        `https://agri-deals-5f3f0e7ec551.herokuapp.com/api/items/${itemId}`,
-        productData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await updateItem(itemId, productData);
 
       console.log("Product updated:", response.data);
       navigate("/");
@@ -148,16 +175,10 @@ const UpdateProductPage = () => {
     }
   };
 
-  const cartItems = useSelector((state) => state.cart.items);
-
-  const removeFromCart = (item_id) => {
-    dispatch(removeItem(item_id));
-  };
-
   return (
     <>
-      <Header cartItems={cartItems} removeFromCart={removeFromCart} />
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      <Header />
+      <Container maxWidth="lg" sx={{ mt: 12, mb: 4 }}>
         <Typography variant="h4" gutterBottom>
           Update Product
         </Typography>
@@ -312,6 +333,7 @@ const UpdateProductPage = () => {
                     variant="contained"
                     color="primary"
                     size="large"
+                    disabled={isSubmitting}
                   >
                     Update Product
                   </Button>

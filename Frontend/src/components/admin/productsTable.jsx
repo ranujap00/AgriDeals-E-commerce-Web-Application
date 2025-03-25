@@ -18,11 +18,14 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Delete, Edit, Visibility } from "@mui/icons-material";
 import PropTypes from "prop-types";
 import { ProductView } from "./productView";
+import { useNavigate } from "react-router-dom";
+import { deleteItem } from "../../api";
 
 export default function ProductsTable(props) {
-  const { data } = props;
+  const { data, setData } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const [openView, setOpenView] = useState(false);
+  const navigate = useNavigate();
   const [selectedRow, setSelectedRow] = useState(null);
 
   const handleMenuOpen = (event, row) => {
@@ -38,6 +41,31 @@ export default function ProductsTable(props) {
   const handleView = () => {
     setOpenView(true);
     setAnchorEl(null);
+  };
+
+  const handleEdit = () => {
+    navigate(`/admin/product/update/${selectedRow.item_id}`);
+  };
+
+  const handleDelete = async () => {
+    try {
+      await deleteItem(selectedRow._id);
+      const updatedData = Object.keys(data).reduce((acc, date) => {
+        const filteredItems = data[date].filter(
+          (item) => item.item_id !== selectedRow.item_id
+        );
+
+        if (filteredItems.length > 0) {
+          acc[date] = filteredItems; // Keep the date group if it still has items
+        }
+
+        return acc;
+      }, {});
+      setData(updatedData);
+      setAnchorEl(null);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -97,7 +125,7 @@ export default function ProductsTable(props) {
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
-        <MenuItem onClick={handleMenuClose} disableRipple>
+        <MenuItem onClick={handleEdit} disableRipple>
           <Stack direction="row" spacing={2}>
             <Edit />
             <Typography>Edit</Typography>
@@ -110,7 +138,7 @@ export default function ProductsTable(props) {
           </Stack>
         </MenuItem>
         <Divider />
-        <MenuItem onClick={handleMenuClose} disableRipple>
+        <MenuItem onClick={handleDelete} disableRipple>
           <Stack direction="row" spacing={2}>
             <Delete />
             <Typography>Delete</Typography>
@@ -130,4 +158,5 @@ export default function ProductsTable(props) {
 
 ProductsTable.propTypes = {
   data: PropTypes.object,
+  setData: PropTypes.func,
 };
