@@ -15,8 +15,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import Header from "../components/Header";
+import Header from "../components/admin/header";
 import Footer from "../components/Footer";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -101,7 +100,6 @@ const AddProductPage = () => {
         images: [],
       },
     };
-  
 
     const imagePromises = images.map(
       (image) =>
@@ -119,17 +117,13 @@ const AddProductPage = () => {
 
       console.log("Product Data being sent:", productData);
 
-      const response = await axios.post(
-        `${BASE_URI}/api/items/`,
-        productData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          maxContentLength: 50 * 1024 * 1024,
-          maxBodyLength: 50 * 1024 * 1024,
-        }
-      );
+      const response = await axios.post(`${BASE_URI}/api/items/`, productData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        maxContentLength: 50 * 1024 * 1024,
+        maxBodyLength: 50 * 1024 * 1024,
+      });
 
       console.log("Product added:", response.data);
       navigate("/");
@@ -146,76 +140,88 @@ const AddProductPage = () => {
     setCurrentStep((prevStep) => prevStep - 1);
   };
 
-  const cartItems = useSelector((state) => state.cart.items);
-
   return (
     <>
-      <Header cartItems={cartItems} />
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      <Header />
+      <Container maxWidth="lg" sx={{ mt: 12, mb: 4 }}>
         <Typography variant="h4" gutterBottom>
           Add New Product
         </Typography>
-        <Paper elevation={3} sx={{ p: 4 }}>
+        <Paper
+          elevation={3}
+          sx={{
+            p: 4,
+            display: "flex",
+            justifyContent: "center",
+            width: "100%",
+          }}
+        >
           <form onSubmit={handleSubmit}>
             {currentStep === 0 && (
-              <Grid container spacing={3}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="First Name"
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleInputChange}
-                    margin="normal"
-                    required
-                  />
-                  <TextField
-                    fullWidth
-                    label="Last Name"
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleInputChange}
-                    margin="normal"
-                    required
-                  />
-                  <TextField
-                    fullWidth
-                    label="Email"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    margin="normal"
-                    required
-                  />
-                  <TextField
-                    fullWidth
-                    label="Contact Number"
-                    name="contactNumber"
-                    type="tel"
-                    value={formData.contactNumber}
-                    onChange={handleInputChange}
-                    margin="normal"
-                    required
-                  />
-                  <TextField
-                    fullWidth
-                    label="Address"
-                    name="address"
-                    value={formData.address}
-                    onChange={handleInputChange}
-                    margin="normal"
-                    multiline
-                    rows={2}
-                    required
-                  />
-                  <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3, width: '100%' }}>
-                    <Button variant="contained" onClick={nextStep}>
-                      Next
-                    </Button>
-                  </Box>
-                </Grid>
-              </Grid>
+              <Box maxWidth="sm">
+                <Typography variant="h6" gutterBottom>Enter seller information</Typography>
+                <TextField
+                  fullWidth
+                  label="First Name"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleInputChange}
+                  margin="normal"
+                  required
+                />
+                <TextField
+                  fullWidth
+                  label="Last Name"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleInputChange}
+                  margin="normal"
+                  required
+                />
+                <TextField
+                  fullWidth
+                  label="Email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  margin="normal"
+                  required
+                />
+                <TextField
+                  fullWidth
+                  label="Contact Number"
+                  name="contactNumber"
+                  type="tel"
+                  value={formData.contactNumber}
+                  onChange={handleInputChange}
+                  margin="normal"
+                  required
+                />
+                <TextField
+                  fullWidth
+                  label="Address"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleInputChange}
+                  margin="normal"
+                  multiline
+                  rows={2}
+                  required
+                />
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    mt: 3,
+                    width: "100%",
+                  }}
+                >
+                  <Button variant="contained" onClick={nextStep}>
+                    Next
+                  </Button>
+                </Box>
+              </Box>
             )}
 
             {currentStep === 1 && (
@@ -307,20 +313,29 @@ const AddProductPage = () => {
                       Upload Images
                     </Button>
                   </label>
-                  <Box sx={{ mt: 2, display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+                  <Box
+                    sx={{ mt: 2, display: "flex", flexWrap: "wrap", gap: 2 }}
+                  >
                     {previewImages.map((image, index) => (
-                      <Box key={index} sx={{ width: 'calc(50% - 16px)', position: 'relative' }}>
+                      <Box
+                        key={index}
+                        sx={{ width: "calc(50% - 16px)", position: "relative" }}
+                      >
                         <img
                           src={image}
                           alt={`Preview ${index + 1}`}
-                          style={{ width: '100%', height: 150, objectFit: 'cover' }}
+                          style={{
+                            width: "100%",
+                            height: 150,
+                            objectFit: "cover",
+                          }}
                         />
                         <IconButton
                           sx={{
-                            position: 'absolute',
+                            position: "absolute",
                             top: 5,
                             right: 5,
-                            bgcolor: 'rgba(255,255,255,0.7)',
+                            bgcolor: "rgba(255,255,255,0.7)",
                           }}
                           onClick={() => handleRemoveImage(index)}
                         >
@@ -329,7 +344,13 @@ const AddProductPage = () => {
                       </Box>
                     ))}
                   </Box>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      mt: 3,
+                    }}
+                  >
                     <Button variant="contained" onClick={prevStep}>
                       Back
                     </Button>

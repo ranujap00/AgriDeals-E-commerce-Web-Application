@@ -17,10 +17,12 @@ import {
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Delete, Edit, Visibility } from "@mui/icons-material";
 import PropTypes from "prop-types";
+import { ProductView } from "./productView";
 
 export default function ProductsTable(props) {
   const { data } = props;
   const [anchorEl, setAnchorEl] = useState(null);
+  const [openView, setOpenView] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
 
   const handleMenuOpen = (event, row) => {
@@ -31,6 +33,11 @@ export default function ProductsTable(props) {
   const handleMenuClose = () => {
     setAnchorEl(null);
     setSelectedRow(null);
+  };
+
+  const handleView = () => {
+    setOpenView(true);
+    setAnchorEl(null);
   };
 
   return (
@@ -96,7 +103,7 @@ export default function ProductsTable(props) {
             <Typography>Edit</Typography>
           </Stack>
         </MenuItem>
-        <MenuItem onClick={handleMenuClose} disableRipple>
+        <MenuItem onClick={handleView} disableRipple>
           <Stack direction="row" spacing={2}>
             <Visibility />
             <Typography>View</Typography>
@@ -110,6 +117,13 @@ export default function ProductsTable(props) {
           </Stack>
         </MenuItem>
       </Menu>
+      {openView && (
+        <ProductView
+          item={selectedRow}
+          open={openView}
+          onClose={() => setOpenView(false)}
+        />
+      )}
     </>
   );
 }

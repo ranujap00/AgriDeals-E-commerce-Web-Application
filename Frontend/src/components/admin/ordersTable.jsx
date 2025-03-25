@@ -13,6 +13,7 @@ import {
   Divider,
   Typography,
   Stack,
+  Box,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Delete, Edit, Visibility } from "@mui/icons-material";
@@ -20,6 +21,7 @@ import PropTypes from "prop-types";
 
 export default function OrdersTable(props) {
   const { data } = props;
+  console.log(data);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedRow, setSelectedRow] = useState(null);
 
@@ -40,12 +42,11 @@ export default function OrdersTable(props) {
           <TableHead>
             <TableRow>
               <TableCell>ID</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Category</TableCell>
-              <TableCell>Price</TableCell>
-              <TableCell>Stock</TableCell>
+              <TableCell>Items</TableCell>
+              <TableCell>Address</TableCell>
+              <TableCell>Total</TableCell>
               <TableCell>Status</TableCell>
-              <TableCell>Actions</TableCell>
+              {/* <TableCell>Actions</TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -66,18 +67,34 @@ export default function OrdersTable(props) {
                 </TableRow>
 
                 {data[date].map((item) => (
-                  <TableRow key={item.item_id}>
-                    <TableCell>{item.item_id}</TableCell>
-                    <TableCell>{item.name}</TableCell>
-                    <TableCell>{item.category}</TableCell>
-                    <TableCell>{item.price}</TableCell>
-                    <TableCell>{item.available_count}</TableCell>
-                    <TableCell>{item.status}</TableCell>
+                  <TableRow key={item.order_id}>
+                    <TableCell>{item.order_id}</TableCell>
+
                     <TableCell>
+                      {item.items &&
+                        item.items.map((orderItem, idx) => (
+                          <Box key={idx} sx={{ p: .5 }}>
+                            <Typography variant="body2">
+                              Name: {orderItem.name}
+                            </Typography>
+                            <Typography variant="body2">
+                              Quantity: {orderItem.quantity}
+                            </Typography>
+                            <Typography variant="body2">
+                              Unit price: {orderItem.price}
+                            </Typography>
+                          </Box>
+                        ))}
+                    </TableCell>
+
+                    <TableCell>{item.shipping_address}</TableCell>
+                    <TableCell>{item.total_price}</TableCell>
+                    <TableCell>{item.status}</TableCell>
+                    {/* <TableCell>
                       <IconButton onClick={(e) => handleMenuOpen(e, item)}>
                         <MoreVertIcon />
                       </IconButton>
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 ))}
               </React.Fragment>
@@ -90,12 +107,6 @@ export default function OrdersTable(props) {
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
-        <MenuItem onClick={handleMenuClose} disableRipple>
-          <Stack direction="row" spacing={2}>
-            <Edit />
-            <Typography>Edit</Typography>
-          </Stack>
-        </MenuItem>
         <MenuItem onClick={handleMenuClose} disableRipple>
           <Stack direction="row" spacing={2}>
             <Visibility />

@@ -39,11 +39,12 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route path="/product/add" element={<AddProductPage />} />
+
             <Route path="/product/update" element={<UpdateProductPage />} />
             <Route path="/product/checkout" element={<CheckoutPage />} />
             <Route path="/admin">
               <Route index element={<Admin />} />
+              <Route path="product/add" element={<AddProductPage />} />
             </Route>
           </Route>
           <Route path="/login" element={<LoginPage />} />

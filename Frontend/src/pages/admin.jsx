@@ -19,10 +19,11 @@ import { Add } from "@mui/icons-material";
 import ProductsTable from "../components/admin/productsTable";
 import OrdersTable from "../components/admin/ordersTable";
 import { getAllItems, getAllOrders } from "../api";
+import { useNavigate } from "react-router-dom";
 
 const groupByDate = (items, dateColumnName) => {
   return items.reduce((groups, item) => {
-    const date = item[dateColumnName];
+    const date = new Date(item[dateColumnName]).toISOString().split("T")[0];
     if (!groups[date]) {
       groups[date] = [];
     }
@@ -32,6 +33,7 @@ const groupByDate = (items, dateColumnName) => {
 };
 
 export default function Admin() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(0);
   const [counts, setCounts] = useState({
     products: 0,
@@ -53,8 +55,19 @@ export default function Admin() {
         }
 
         if (ordersData) {
-          setOrders(groupByDate(ordersData, "ordered_date"));
+          setOrders(groupByDate(ordersData, "order_date"));
         }
+
+        const totalSales = ordersData.reduce(
+          (sum, order) => sum + (order.total_price || 0),
+          0
+        );
+        
+        setCounts({
+          orders: ordersData.length,
+          products: productsData.length,
+          sales: totalSales,
+        });
 
         setLoading(false);
       };
@@ -125,7 +138,7 @@ export default function Admin() {
               <Typography variant="h4" gutterBottom>
                 Products
               </Typography>
-              <Button variant="contained" color="primary" startIcon={<Add />}>
+              <Button onClick={() => navigate('/admin/product/add')} variant="contained" color="primary" startIcon={<Add />}>
                 <Typography>Add new product</Typography>
               </Button>
             </Stack>
