@@ -1,7 +1,7 @@
 // src/components/AuthWrapper.jsx
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import { setUser, logout, setLoading } from "../store/authSlice";
 
@@ -15,7 +15,7 @@ const serializeUser = (user) => {
   };
 };
 
-const AuthWrapper = ({ children }) => {
+const AuthWrapper = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -52,7 +52,7 @@ const AuthWrapper = ({ children }) => {
     return <div>Loading...</div>;
   }
 
-  return <>{children}</>;
+  return <Outlet/>;
 };
 
 export default AuthWrapper;

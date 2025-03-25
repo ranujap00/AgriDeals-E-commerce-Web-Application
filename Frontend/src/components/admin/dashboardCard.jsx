@@ -20,6 +20,6 @@ export default function DashboardCard(props) {
 
 DashboardCard.propTypes = {
   title: PropType.string,
-  value: PropType.string,
+  value: PropType.number,
   icon: PropType.node,
 };
