@@ -14,7 +14,7 @@ export default function ProfileMenu() {
   const open = Boolean(anchorEl);
 
   const user = useSelector((state) => state.auth.user);
-  
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -24,6 +24,9 @@ export default function ProfileMenu() {
   const handleLogout = () => {
     dispatch(logout());
     navigate("/login");
+  };
+  const handleViewOrders = () => {
+    navigate("/orders");
   };
 
   return (
@@ -51,7 +54,7 @@ export default function ProfileMenu() {
             <Typography>Profile</Typography>
           </Stack>
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleViewOrders}>
           <Stack direction="row" spacing={2} sx={{ minWidth: 200 }}>
             <ShoppingBasketRounded color="primary" />
             <Typography>My Orders</Typography>

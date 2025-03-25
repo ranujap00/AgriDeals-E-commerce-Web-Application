@@ -25,3 +25,7 @@ export const search = async (query) => {
 export const placeOrder = async (order) => {
     return axios.post(`${API_URL}/orders/`, { ...order }).then((res) => res.data);
 }
+
+export const getUserOrders = async (id) => {
+    return axios.get(`${API_URL}/orders/user/${id}`).then((res) => res.data);
+}

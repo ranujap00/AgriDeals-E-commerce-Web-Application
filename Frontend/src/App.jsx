@@ -13,6 +13,7 @@ import AddProductPage from "./pages/AddProducts";
 import UpdateProductPage from "./pages/UpdateProduct";
 import Layout from "./components/Layout";
 import Admin from "./pages/admin";
+import { Orders } from "./pages/Orders";
 
 const theme = createTheme({
   palette: {
@@ -39,7 +40,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
+            <Route path="/orders" element={<Orders />} />
             <Route path="/product/update" element={<UpdateProductPage />} />
             <Route path="/product/checkout" element={<CheckoutPage />} />
             <Route path="/admin">
