@@ -1,10 +1,6 @@
 // App.jsx
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginPage from "../src/pages/LoginPage";
 import SignUpPage from "../src/pages/SignUpPage";
 import HomePage from "../src/pages/HomePage";
@@ -52,6 +48,14 @@ function App() {
           </Route>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
+          <Route
+            path="/search/:query"
+            element={
+              <Layout>
+                <HomePage />
+              </Layout>
+            }
+          />
           <Route
             path="/"
             element={

@@ -10,12 +10,15 @@ import ProductCard from "../components/ProductCard";
 import "../styles/HomePage.css";
 import { useDispatch } from "react-redux";
 import { addItem } from "../store/cartSlice";
-import { getItems } from "../api";
+import { getItems, search } from "../api";
+import { useParams } from "react-router-dom";
 
 const HomePage = ({ category }) => {
   const dispatch = useDispatch();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const { query } = useParams();
 
   const addToCart = (product) => {
     dispatch(addItem(product));
@@ -28,7 +31,12 @@ const HomePage = ({ category }) => {
     const fetchProduct = async () => {
       setLoading(true);
       try {
-        const items = await getItems(category);
+        let items;
+        if (query) {
+          items = await search(query);
+        } else {
+          items = await getItems(category);
+        }
         setProducts(items);
       } catch (error) {
         setProducts(null);
@@ -38,7 +46,7 @@ const HomePage = ({ category }) => {
       }
     };
     fetchProduct();
-  }, [category]);
+  }, [category, query]);
 
   return (
     <div className="home-container">
@@ -60,7 +68,7 @@ const HomePage = ({ category }) => {
                 gutterBottom
                 sx={{ textTransform: "capitalize" }}
               >
-                {category} Products
+                {query ? `Search results - ${query}` : `${category} Products`}
               </Typography>
               <Container
                 maxWidth="xl"
@@ -85,7 +93,11 @@ const HomePage = ({ category }) => {
                       </Grid>
                     ))}
                   </Grid>
-                ): <Typography textAlign="center">No item found in {category}</Typography>}
+                ) : (
+                  <Typography textAlign="center">
+                    No item found in {category}
+                  </Typography>
+                )}
               </Container>
             </>
           )}

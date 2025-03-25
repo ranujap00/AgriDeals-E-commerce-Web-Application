@@ -11,9 +11,11 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { ShoppingBag } from "@mui/icons-material";
+import { useSelector } from "react-redux";
 
 const ProductCard = ({ product, addToCart }) => {
   const navigate = useNavigate();
+  const {user} = useSelector((state) => state.auth);
 
   const handleCardClick = () => {
     navigate(`/product/${product.item_id}`);
@@ -87,6 +89,7 @@ const ProductCard = ({ product, addToCart }) => {
             borderRadius: "25px",
           }}
           endIcon={<ShoppingBag/>}
+          disabled={user === null}
         >
           Add to cart
         </Button>

@@ -10,7 +10,6 @@ import {
   IconButton,
   Rating,
   Stack,
-  Divider,
   Tabs,
   Tab,
 } from "@mui/material";
@@ -36,6 +35,7 @@ const ViewProductsPage = () => {
   const dispatch = useDispatch();
   const [activeImage, setActiveImage] = useState(0);
   const [activeTab, setActiveTab] = useState(0);
+  const {user} = useSelector((state) => state.auth);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -245,6 +245,7 @@ const ViewProductsPage = () => {
                 mb: 2,
                 borderRadius: "25px",
               }}
+              disabled={user === null}
             >
               <Typography noWrap>Add to Cart</Typography>
             </Button>

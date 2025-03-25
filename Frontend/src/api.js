@@ -11,9 +11,13 @@ export const getAllOrders = async () => {
 }
 
 export const getItems = async (category) => {
-    const Category = category.replaceAll(" ", "_").toLowerCase();
+    let convertedCategory = category.replace(/ /g, "_").toLowerCase();
     if (category !== "all") {
-        return axios.get(`${API_URL}/category/${Category}`).then((res) => res.data);
+        return await axios.get(`${API_URL}/category/${convertedCategory}`).then((res) => res.data);
     }
-    return axios.get(`${API_URL}/items`).then((res) => res.data);
+    return await axios.get(`${API_URL}/items`).then((res) => res.data);
+}
+
+export const search = async (query) => {
+    return axios.get(`${API_URL}/items/search/${query}`).then((res) => res.data);
 }

@@ -12,9 +12,9 @@ exports.postItem = async (req, res) => {
 
     const { category, name, description, price, expiry_period, available_count, images } = product;
     const { firstName, lastName, email, contactNumber, address } = user;
-    
+
     const uuid = `itm-${uuidv4().split('-')[0]}`;
-    
+
     const post_date = new Date();
     const expiry_date = moment(post_date).add(expiry_period, 'days').toDate();
 
@@ -26,7 +26,7 @@ exports.postItem = async (req, res) => {
       contact: contactNumber,
       address: address
     };
-    
+
     const newItem = new Item({
       item_id: uuid,
       name: name,
@@ -112,6 +112,31 @@ exports.deleteItem = async (req, res) => {
   try {
     await Item.findByIdAndDelete(req.params.id);
     res.json({ msg: 'Item deleted' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+};
+
+exports.searchItems = async (req, res) => {
+  try {
+    const query = req.params.query;
+    if (!query) {
+      return res.status(400).json({ message: 'Search query is required' });
+    }
+
+    const items = await Item.find({
+      $or: [
+        { name: { $regex: query, $options: 'i' } },
+        { description: { $regex: query, $options: 'i' } },
+      ],
+    });
+
+    if (items.length === 0) {
+      return res.status(404).json({ message: 'No items found matching the search query' });
+    }
+
+    res.json(items);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');

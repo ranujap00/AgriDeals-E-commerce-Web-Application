@@ -8,14 +8,25 @@ import { Search } from "@mui/icons-material";
 import Cart from "./cart";
 import ProfileMenu from "./profileMenu";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 
 function Header() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [query, setQuery] = useState("");
   const user = useSelector((state) => state.auth.user);
 
   const handleHomeNavigation = () => {
     navigate("/");
+  };
+
+  const handleSearch = () => {
+    if (query.trim() !== "") {
+      navigate(`/search/${query}`);
+    } else {
+      setQuery("");
+      navigate("/");
+    }
   };
 
   return (
@@ -48,6 +59,7 @@ function Header() {
           placeholder="Search for anything"
           variant="outlined"
           size="small"
+          onChange={(e) => setQuery(e.target.value)}
           sx={{
             bgcolor: "background.paper",
             borderRadius: 50,
@@ -65,7 +77,7 @@ function Header() {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton>
+                <IconButton onClick={handleSearch}>
                   <Search />
                 </IconButton>
               </InputAdornment>
@@ -82,7 +94,11 @@ function Header() {
             {location.pathname !== "/checkout" && <Cart />}
             <ProfileMenu />
           </Stack>
-        ) : <Button variant="text" onClick={() => navigate('/login')}>Sign in</Button>}
+        ) : (
+          <Button variant="text" onClick={() => navigate("/login")}>
+            Sign in
+          </Button>
+        )}
       </Toolbar>
     </AppBar>
   );

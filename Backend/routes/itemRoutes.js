@@ -13,4 +13,6 @@ router.put('/:id', itemController.updateItem);
 
 router.delete('/:id', itemController.deleteItem);
 
+router.get('/search/:query', itemController.searchItems);
+
 module.exports = router;
