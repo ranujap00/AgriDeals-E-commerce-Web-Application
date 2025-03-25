@@ -21,3 +21,7 @@ export const getItems = async (category) => {
 export const search = async (query) => {
     return axios.get(`${API_URL}/items/search/${query}`).then((res) => res.data);
 }
+
+export const placeOrder = async (order) => {
+    return axios.post(`${API_URL}/orders/`, { ...order }).then((res) => res.data);
+}
