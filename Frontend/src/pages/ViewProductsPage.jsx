@@ -35,7 +35,7 @@ const ViewProductsPage = () => {
   const dispatch = useDispatch();
   const [activeImage, setActiveImage] = useState(0);
   const [activeTab, setActiveTab] = useState(0);
-  const {user} = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -84,7 +84,6 @@ const ViewProductsPage = () => {
   if (loading) {
     return (
       <Container
-        maxWidth="lg"
         sx={{
           mt: 4,
           display: "flex",
@@ -105,7 +104,16 @@ const ViewProductsPage = () => {
   return (
     <>
       <Header cartItems={cartItems} removeFromCart={removeFromCart} />
-      <Container maxWidth="lg" sx={{ mt: 14 }}>
+      <Container
+        maxWidth={false}
+        sx={{
+          mt: 14,
+          maxWidth: {
+            xs: "100%",
+            xl: "80vw",
+          },
+        }}
+      >
         <Stack spacing={4} direction="row">
           <Box width="100%" xs={8}>
             <Box

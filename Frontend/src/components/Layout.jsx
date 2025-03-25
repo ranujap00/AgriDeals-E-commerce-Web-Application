@@ -30,8 +30,17 @@ const Layout = ({ children }) => {
       <CssBaseline />
       <Header />
       <Box
-        maxWidth="lg"
-        sx={{ display: "flex", flex: "1 1 auto", width: "100%", mx: "auto" }}
+        maxWidth={{
+          xs: "100%",
+          xl: "80vw",
+        }}
+        sx={{
+          display: "flex",
+          flex: "1 1 auto",
+          width: "100%",
+          mx: "auto",
+          p: 1,
+        }}
       >
         <SideNavigation onCategorySelect={handleCategorySelect} />
         <Box sx={{ p: 2, overflowY: "auto", flexGrow: "1" }}>

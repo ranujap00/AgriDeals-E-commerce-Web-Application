@@ -57,7 +57,10 @@ const SignUpPage = () => {
             display: "flex",
             justifyContent: "space-between",
             width: "100%",
-            maxWidth: "1240px",
+            maxWidth: {
+              xs: "100%",
+              xl: "80vw",
+            },
             mx: "auto",
           }}
         >

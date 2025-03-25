@@ -71,7 +71,6 @@ const HomePage = ({ category }) => {
                 {query ? `Search results - ${query}` : `${category} Products`}
               </Typography>
               <Container
-                maxWidth="xl"
                 style={{
                   flex: 1,
                   display: "flex",

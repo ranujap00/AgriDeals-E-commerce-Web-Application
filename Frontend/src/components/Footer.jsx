@@ -23,7 +23,15 @@ export default function Footer() {
         backgroundColor: "secondary.main",
       }}
     >
-      <Container>
+      <Container
+        maxWidth={false}
+        sx={{
+          maxWidth: {
+            xs: "100%",
+            xl: "80vw",
+          }
+        }}
+      >
         <Stack direction="row" justifyContent="space-between" my={4}>
           <Box>
             <Typography

@@ -97,7 +97,16 @@ export default function Admin() {
   return (
     <main>
       <Header />
-      <Container sx={{ my: 12 }}>
+      <Container
+        maxWidth={false}
+        sx={{
+          my: 12,
+          maxWidth: {
+            xs: "100%",
+            xl: "80vw",
+          },
+        }}
+      >
         <Grid container spacing={3} sx={{ marginBottom: 4 }}>
           <Grid item xs={12} sm={4}>
             <DashboardCard
